@@ -4,8 +4,8 @@ namespace Magalu.Challenge.Web.Api.Models.Product
 {
     public class PostProductModel
     {
-        [Range(0d, 99999999999.99d, ErrorMessage = "Product price must be greater than or equal to zero.")]
-        [RegularExpression(@"^\d+\.\d{0,2}$", ErrorMessage = "Product price can not have more than two decimal places.")]
+        [MaxPrecision(2, ErrorMessage = "Product price decimal places should have between 0 to 2 digits.")]
+        [Range(0.01d, 99999999999.99d, ErrorMessage = "Product price must be between 0.01 and 99999999999.99.")]
         public decimal Price { get; set; }
 
         [Required(ErrorMessage = "Product brand is required.")]

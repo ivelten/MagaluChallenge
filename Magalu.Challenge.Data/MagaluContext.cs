@@ -26,6 +26,7 @@ namespace Magalu.Challenge.Data
             builder.Entity<Customer>(customer =>
             {
                 customer.HasKey(c => c.Id);
+                customer.HasAlternateKey(c => c.Email);
                 customer.Property(c => c.Name).IsRequired().HasMaxLength(100);
                 customer.Property(c => c.Email).IsRequired().HasMaxLength(254);
                 customer.ToTable("customer");
@@ -66,7 +67,15 @@ namespace Magalu.Challenge.Data
 
             if (!Products.Any())
             {
-                var products = new Product[] { };
+                var products = new Product[] 
+                {
+                    new Product { Title = "Cerveja 500ML", Brand = "Heineken", Image = "http://magalu.com/product/image/1", Price = 10.2M },
+                    new Product { Title = "Água Mineral 500ML", Brand = "Campinho", Image = "http://magalu.com/product/image/2", Price = 3.4M },
+                    new Product { Title = "Televisão 59 Polegadas", Brand = "LG", Image = "http://magalu.com/product/image/3", Price = 2890.56M },
+                    new Product { Title = "Cafeteira", Brand = "Arno", Image = "http://magalu.com/product/image/4", Price = 200.5M },
+                    new Product { Title = "Cafeteira", Brand = "Walita", Image = "http://magalu.com/product/image/5", Price = 200.5M },
+                    new Product { Title = "Fritadeira Elétrica", Brand = "Walita", Image = "http://magalu.com/product/image/6", Price = 200.5M },
+                };
 
                 Products.AddRange(products);
             }

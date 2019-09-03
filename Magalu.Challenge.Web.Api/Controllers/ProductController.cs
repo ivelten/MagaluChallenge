@@ -10,10 +10,8 @@ namespace Magalu.Challenge.Web.Api.Controllers
     [ApiController]
     public class ProductController : DataController<Product, GetProductModel, PostProductModel>
     {
-        public const AllowedHttpVerbs AllowedVerbs = AllowedHttpVerbs.Get | AllowedHttpVerbs.GetPage | AllowedHttpVerbs.Post | AllowedHttpVerbs.Put;
-
         public ProductController(IConfiguration configuration, MagaluContext context, IMapper mapper)
-            : base(configuration, context, mapper, AllowedVerbs)
+            : base(configuration, context, mapper, AllowedActions.Get | AllowedActions.GetPage | AllowedActions.Post | AllowedActions.Put)
         {
         }
     }

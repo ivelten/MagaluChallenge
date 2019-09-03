@@ -1,8 +1,11 @@
-﻿using AutoMapper;
+﻿using System.Threading.Tasks;
+using AutoMapper;
 using Magalu.Challenge.Data;
 using Magalu.Challenge.Web.Api.Models.Customer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Magalu.Challenge.Web.Api.Controllers
 {
@@ -10,11 +13,17 @@ namespace Magalu.Challenge.Web.Api.Controllers
     [ApiController]
     public class CustomerController : DataController<Customer, GetCustomerModel, PostCustomerModel>
     {
-        public const AllowedHttpVerbs AllowedVerbs = AllowedHttpVerbs.All;
-
         public CustomerController(IConfiguration configuration, MagaluContext context, IMapper mapper)
-            : base(configuration, context, mapper, AllowedVerbs)
+            : base(configuration, context, mapper, AllowedActions.All)
         {
+        }
+
+        public override async Task<ActionResult<GetCustomerModel>> Post(PostCustomerModel model)
+        {
+            if (await Context.Customers.AnyAsync(c => c.Email == model.Email))
+                return BadRequest(new { Message = $"E-mail address{model.Email} is already used by another customer." });
+
+            return await base.Post(model);
         }
     }
 }

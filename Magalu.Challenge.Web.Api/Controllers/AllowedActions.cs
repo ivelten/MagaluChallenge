@@ -3,7 +3,7 @@
 namespace Magalu.Challenge.Web.Api.Controllers
 {
     [Flags]
-    public enum AllowedHttpVerbs
+    public enum AllowedActions
     {
         None = 0,
         Get = 1,
