@@ -21,7 +21,7 @@ namespace Magalu.Challenge.Web.Api.Controllers
         public override async Task<ActionResult<GetCustomerModel>> Post(PostCustomerModel model)
         {
             if (await Context.Customers.AnyAsync(c => c.Email == model.Email))
-                return BadRequest(new { Message = $"E-mail address{model.Email} is already used by another customer." });
+                ModelState.AddModelError("Email", $"E-mail address '{model.Email}' is already used by another customer.");
 
             return await base.Post(model);
         }

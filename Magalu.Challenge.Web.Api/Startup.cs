@@ -31,6 +31,11 @@ namespace Magalu.Challenge.Web.Api
             });
 
             services.AddAutoMapper(typeof(DefaultProfile));
+
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
