@@ -44,12 +44,15 @@ namespace Magalu.Challenge.Web.Api.Controllers
         }
 
         [HttpGet]
-        public virtual async Task<ActionResult<IEnumerable<TGetModel>>> GetPage(int page)
+        public virtual async Task<ActionResult<IEnumerable<TGetModel>>> GetPage(int? page)
         {
             if (!allowedActions.HasFlag(AllowedActions.GetPage))
                 return NotFound(null);
 
-            var entities = await Context.Set<TEntity>().AsQueryable().SelectPage(page, DefaultPageSize).ToArrayAsync();
+            var pageNumber = page.GetValueOrDefault(1);
+
+            var entities = await Context.Set<TEntity>().AsQueryable().SelectPage(pageNumber, DefaultPageSize).ToArrayAsync();
+
             return Mapper.Map<TGetModel[]>(entities);
         }
 

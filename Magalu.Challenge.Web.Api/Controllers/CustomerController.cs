@@ -4,8 +4,10 @@ using Magalu.Challenge.Data;
 using Magalu.Challenge.Web.Api.Models.Customer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Magalu.Challenge.Web.Api.Models.Product;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Magalu.Challenge.Web.Api.Controllers
 {
@@ -21,9 +23,25 @@ namespace Magalu.Challenge.Web.Api.Controllers
         public override async Task<ActionResult<GetCustomerModel>> Post(PostCustomerModel model)
         {
             if (await Context.Customers.AnyAsync(c => c.Email == model.Email))
-                ModelState.AddModelError("Email", $"E-mail address '{model.Email}' is already used by another customer.");
+                ModelState.AddModelError("Email", $"E-mail address '{model.Email}' is already being used by another customer.");
 
             return await base.Post(model);
+        }
+
+        [HttpGet("{id}/favorite_products")]
+        public async Task<ActionResult<IEnumerable<GetProductModel>>> GetFavoriteProducts(long id, int? page)
+        {
+            var pageNumber = page.GetValueOrDefault(1);
+
+            var products = await 
+                Context.CustomerFavoriteProducts
+                .AsQueryable()
+                .Where(fp => fp.CustomerId == id)
+                .Select(fp => fp.Product)
+                .SelectPage(pageNumber, DefaultPageSize)
+                .ToArrayAsync();
+
+            return Mapper.Map<GetProductModel[]>(products);
         }
     }
 }
