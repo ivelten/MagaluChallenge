@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Magalu.Challenge.Web.Api
 {
@@ -28,6 +29,7 @@ namespace Magalu.Challenge.Web.Api
             {
                 var connectionString = Configuration.GetSection("ConnectionStrings").GetValue<string>("MagaluDatabase");
                 options.UseMySql(connectionString);
+                options.UseLazyLoadingProxies();
             });
 
             services.AddAutoMapper(typeof(DefaultProfile));

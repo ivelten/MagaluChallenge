@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Magalu.Challenge.Web.Api.Controllers
 {
-    public abstract class DataController<TEntity, TGetModel, TPostModel> : ConfigurableController where TEntity : class
+    public abstract class DataController<TEntity, TGetModel, TSendModel> : ConfigurableController where TEntity : class
     {
         protected readonly MagaluContext Context;
 
@@ -20,7 +20,11 @@ namespace Magalu.Challenge.Web.Api.Controllers
 
         private readonly AllowedActions allowedActions;
 
-        public DataController(IConfiguration configuration, MagaluContext context, IMapper mapper, AllowedActions allowedActions)
+        public DataController(
+            IConfiguration configuration, 
+            MagaluContext context,
+            IMapper mapper,
+            AllowedActions allowedActions)
             : base(configuration)
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
@@ -57,7 +61,7 @@ namespace Magalu.Challenge.Web.Api.Controllers
         }
 
         [HttpPost]
-        public virtual async Task<ActionResult<TGetModel>> Post([FromBody] TPostModel model)
+        public virtual async Task<ActionResult<TGetModel>> Post([FromBody] TSendModel model)
         {
             if (!allowedActions.HasFlag(AllowedActions.Post))
                 return NotFound(null);
@@ -74,7 +78,7 @@ namespace Magalu.Challenge.Web.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public virtual async Task<ActionResult<TGetModel>> Put(long id, [FromBody] TPostModel model)
+        public virtual async Task<ActionResult<TGetModel>> Put(long id, [FromBody] TSendModel model)
         {
             if (!allowedActions.HasFlag(AllowedActions.Put))
                 return NotFound(null);

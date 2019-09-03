@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.ObjectModel;
 
 namespace Magalu.Challenge.Data
 {
@@ -15,9 +15,9 @@ namespace Magalu.Challenge.Data
 
         public string Title { get; set; }
 
-        public virtual IList<CustomerProductReview> CustomerReviews { get; set; }
+        public virtual ICollection<CustomerProductReview> CustomerReviews { get; set; } = new Collection<CustomerProductReview>();
 
-        public virtual IList<CustomerFavoriteProduct> FavoriteCustomers { get; set; }
+        public virtual ICollection<CustomerFavoriteProduct> FavoriteCustomers { get; set; } = new Collection<CustomerFavoriteProduct>();
     }
 
     public class Customer
@@ -28,9 +28,9 @@ namespace Magalu.Challenge.Data
 
         public string Email { get; set; }
 
-        public virtual IList<CustomerProductReview> ProductReviews { get; set; }
+        public virtual ICollection<CustomerProductReview> ProductReviews { get; set; } = new Collection<CustomerProductReview>();
 
-        public virtual IList<CustomerFavoriteProduct> FavoriteProducts { get; set; }
+        public virtual ICollection<CustomerFavoriteProduct> FavoriteProducts { get; set; } = new Collection<CustomerFavoriteProduct>();
     }
 
     public class CustomerProductReview

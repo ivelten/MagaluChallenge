@@ -10,10 +10,16 @@ namespace Magalu.Challenge.Web.Api.Services.AutoMapper.Profiles
     {
         public DefaultProfile()
         {
-            CreateMap<Product, GetProductModel>().ForMember(m => m.ReviewScore, s => s.MapFrom(p => p.CustomerReviews.Average(r => r.Score)));
-            CreateMap<PostProductModel, Product>();
+            CreateMap<Product, GetProductModel>()
+                .ForMember(m => m.ReviewScore, s => s.MapFrom(p => p.CustomerReviews.AverageOrDefault(r => r.Score)));
+
+            CreateMap<SendProductModel, Product>();
+
             CreateMap<Customer, GetCustomerModel>();
-            CreateMap<PostCustomerModel, Customer>();
+
+            CreateMap<SendCustomerModel, Customer>();
+
+            CreateMap<CustomerFavoriteProduct, GetFavoriteProductModel>();
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Magalu.Challenge.Web.Api.Models.Product
 {
-    public class PostProductModel
+    public class SendProductModel
     {
         [MaxPrecision(2, ErrorMessage = "Product price decimal places should have between 0 to 2 digits.")]
         [Range(0.01d, 99999999999.99d, ErrorMessage = "Product price must be between 0.01 and 99999999999.99.")]

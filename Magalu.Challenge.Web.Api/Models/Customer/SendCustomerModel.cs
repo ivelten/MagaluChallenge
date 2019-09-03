@@ -2,7 +2,7 @@
 
 namespace Magalu.Challenge.Web.Api.Models.Customer
 {
-    public class PostCustomerModel
+    public class SendCustomerModel
     {
         [Required(ErrorMessage = "Customer name is required.")]
         // Most browsers and search engines limit URL maximum size to 2048 characters
