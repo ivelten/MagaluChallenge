@@ -30,7 +30,7 @@ namespace Magalu.Challenge.Web.Api
         {
             services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddDbContext<MagaluContext>(options => options.UseMySQL("DefaultDatabaseConnection"));
+            services.AddDbContext<MagaluContext>(options => options.UseMySQL("MagaluDatabase"));
             services.AddAutoMapper(typeof(DefaultProfile));
         }
 
