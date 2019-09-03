@@ -24,12 +24,8 @@ namespace Magalu.Challenge.Data
     {
         public long Id { get; set; }
 
-        [Required(ErrorMessage = "Customer name is required.")]
-        [MaxLength(50, ErrorMessage = "Customer name should not have more than 100 characters length.")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Customer e-mail is required.")]
-        [MaxLength(254, ErrorMessage = "Customer e-mail should not have more than 254 characters length.")]
         public string Email { get; set; }
 
         public virtual IList<CustomerProductReview> ProductReviews { get; set; }

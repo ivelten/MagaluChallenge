@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Magalu.Challenge.Core;
 using System.Linq;
 
 namespace Magalu.Challenge.Web.Api.Controllers
@@ -33,7 +32,7 @@ namespace Magalu.Challenge.Web.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public virtual async Task<ActionResult<TGetModel>> Get(int id)
+        public virtual async Task<ActionResult<TGetModel>> Get(long id)
         {
             if (!allowedVerbs.HasFlag(AllowedHttpVerbs.Get))
                 return NotFound();
@@ -52,12 +51,29 @@ namespace Magalu.Challenge.Web.Api.Controllers
             if (!allowedVerbs.HasFlag(AllowedHttpVerbs.GetPage))
                 return NotFound();
 
-            var entities = await Context.Set<TEntity>().SelectPage(page, DefaultPageSize).AsQueryable().ToArrayAsync();
+            var entities = await Context.Set<TEntity>().AsQueryable().SelectPage(page, DefaultPageSize).ToArrayAsync();
             return Mapper.Map<TGetModel[]>(entities);
         }
 
+        [HttpPost("{id}")]
+        public virtual async Task<ActionResult<TGetModel>> Post([FromBody] TPostModel model)
+        {
+            if (!allowedVerbs.HasFlag(AllowedHttpVerbs.Post))
+                return NotFound();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var entity = Mapper.Map<TEntity>(model);
+
+            await Context.AddAsync(entity);
+            await Context.SaveChangesAsync();
+
+            return Mapper.Map<TGetModel>(entity);
+        }
+
         [HttpPut("{id}")]
-        public virtual async Task<ActionResult<TGetModel>> Put(int id, [FromBody] TPostModel model)
+        public virtual async Task<ActionResult<TGetModel>> Put(long id, [FromBody] TPostModel model)
         {
             if (!allowedVerbs.HasFlag(AllowedHttpVerbs.Put))
                 return NotFound();
@@ -78,7 +94,7 @@ namespace Magalu.Challenge.Web.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public virtual async Task<ActionResult> Delete(int id)
+        public virtual async Task<ActionResult> Delete(long id)
         {
             if (!allowedVerbs.HasFlag(AllowedHttpVerbs.Put))
                 return NotFound();

@@ -8,7 +8,7 @@ namespace Magalu.Challenge.Web.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CustomerController : DataController<Customer, CustomerGetModel, CustomerPostModel>
+    public class CustomerController : DataController<Customer, GetCustomerModel, PostCustomerModel>
     {
         public const AllowedHttpVerbs AllowedVerbs = AllowedHttpVerbs.All;
 
