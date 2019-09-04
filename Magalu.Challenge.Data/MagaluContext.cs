@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace Magalu.Challenge.Data
 {
@@ -9,7 +8,6 @@ namespace Magalu.Challenge.Data
         public MagaluContext(DbContextOptions options)
             : base(options)
         {
-            SetupDatabase();
         }
 
         public DbSet<Customer> Customers { get; set; }
@@ -19,6 +17,8 @@ namespace Magalu.Challenge.Data
         public DbSet<ProductReview> ProductReviews { get; set; }
 
         public DbSet<FavoriteProduct> FavoriteProducts { get; set; }
+
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -61,28 +61,13 @@ namespace Magalu.Challenge.Data
                 favorite.HasOne(f => f.Customer).WithMany(c => c.FavoriteProducts).HasForeignKey(f => f.CustomerId);
                 favorite.ToTable("favorite_product");
             });
-        }
 
-        private void SetupDatabase()
-        {
-            Database.EnsureCreated();
-
-            if (!Products.Any())
+            builder.Entity<User>(user =>
             {
-                var products = new Product[] 
-                {
-                    new Product { Title = "Cerveja 500ML", Brand = "Heineken", Image = "http://magalu.com/product/image/1", Price = 10.2M },
-                    new Product { Title = "Água Mineral 500ML", Brand = "Campinho", Image = "http://magalu.com/product/image/2", Price = 3.4M },
-                    new Product { Title = "Televisão 59 Polegadas", Brand = "LG", Image = "http://magalu.com/product/image/3", Price = 2890.56M },
-                    new Product { Title = "Cafeteira", Brand = "Arno", Image = "http://magalu.com/product/image/4", Price = 200.5M },
-                    new Product { Title = "Cafeteira", Brand = "Walita", Image = "http://magalu.com/product/image/5", Price = 200.5M },
-                    new Product { Title = "Fritadeira Elétrica", Brand = "Walita", Image = "http://magalu.com/product/image/6", Price = 200.5M },
-                };
-
-                Products.AddRange(products);
-            }
-
-            SaveChanges();
+                user.HasKey(u => u.Username);
+                user.Property(u => u.Username).HasMaxLength(50);
+                user.ToTable("user");
+            });
         }
     }
 }

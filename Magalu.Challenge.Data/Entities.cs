@@ -61,4 +61,19 @@ namespace Magalu.Challenge.Data
 
         public virtual Customer Customer { get; set; }
     }
+
+    public enum Role
+    {
+        User = 0,
+        Administrator = 1
+    }
+
+    public class User
+    {
+        public string Username { get; set; }
+
+        public string PasswordHash { get; set; }
+
+        public Role Role { get; set; }
+    }
 }

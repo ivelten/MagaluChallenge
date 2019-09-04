@@ -10,10 +10,13 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.2.6" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Magalu.Challenge.Data.Development\Magalu.Challenge.Data.Development.csproj" />
     <ProjectReference Include="..\Magalu.Challenge.Data\Magalu.Challenge.Data.csproj" />
+    <ProjectReference Include="..\Magalu.Challenge.Security\Magalu.Challenge.Security.csproj" />
     <ProjectReference Include="..\Magalu.Challenge.Shared\Magalu.Challenge.Shared.csproj" />
   </ItemGroup>
 

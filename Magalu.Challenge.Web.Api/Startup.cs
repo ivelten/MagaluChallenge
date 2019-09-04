@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
 using Magalu.Challenge.Data;
+using Magalu.Challenge.Data.Development;
+using Magalu.Challenge.Security;
+using Magalu.Challenge.Shared.Abstractions;
 using Magalu.Challenge.Web.Api.Services.AutoMapper.Profiles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,12 +17,15 @@ namespace Magalu.Challenge.Web.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        private readonly IConfiguration configuration;
 
-        public IConfiguration Configuration { get; }
+        private readonly IHostingEnvironment hostingEnvironment;
+
+        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+        {
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this.hostingEnvironment = hostingEnvironment ?? throw new ArgumentNullException(nameof(hostingEnvironment));
+        }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -30,9 +36,13 @@ namespace Magalu.Challenge.Web.Api
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options => options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore);
 
+            services.AddTransient<IHashingService, BCryptHashingService>();
+            services.AddTransient<MagaluContextDatabaseInitializer>();
+
             services.AddDbContext<MagaluContext>(options =>
             {
-                var connectionString = Configuration.GetSection("ConnectionStrings").GetValue<string>("MagaluDatabase");
+                var connectionString = configuration.GetSection("ConnectionStrings").GetValue<string>("MagaluDatabase");
+
                 options.UseMySql(connectionString);
                 options.UseLazyLoadingProxies();
             });
@@ -43,14 +53,23 @@ namespace Magalu.Challenge.Web.Api
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
+
+            if (hostingEnvironment.IsDevelopment())
+            {
+                var serviceProvider = services.BuildServiceProvider();
+                var databaseInitializer = serviceProvider.GetService<MagaluContextDatabaseInitializer>();
+
+                databaseInitializer.InitializeDevelopmentEnvironmentDatabase();
+            }
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
+            if (hostingEnvironment.IsDevelopment())
                 app.UseDeveloperExceptionPage();
             else
                 app.UseHsts();
+
 
             app.UseHttpsRedirection();
             app.UseMvc();

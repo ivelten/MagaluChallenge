@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Magalu.Challenge.Data\Magalu.Challenge.Data.csproj" />
+    <ProjectReference Include="..\Magalu.Challenge.Shared\Magalu.Challenge.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

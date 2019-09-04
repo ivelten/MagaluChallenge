@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Magalu.Challenge.Web.Api", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Magalu.Challenge.Shared", "Magalu.Challenge.Shared\Magalu.Challenge.Shared.csproj", "{4A579EDD-D612-43AC-B29D-BA65A42F7AFB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Magalu.Challenge.Security", "Magalu.Challenge.Security\Magalu.Challenge.Security.csproj", "{AC98D67B-20D3-4991-890C-4EB338061338}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Magalu.Challenge.Data.Development", "Magalu.Challenge.Data.Development\Magalu.Challenge.Data.Development.csproj", "{436C57F4-B21F-4C3B-934D-03C9CAC98387}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{4A579EDD-D612-43AC-B29D-BA65A42F7AFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A579EDD-D612-43AC-B29D-BA65A42F7AFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A579EDD-D612-43AC-B29D-BA65A42F7AFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC98D67B-20D3-4991-890C-4EB338061338}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC98D67B-20D3-4991-890C-4EB338061338}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC98D67B-20D3-4991-890C-4EB338061338}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC98D67B-20D3-4991-890C-4EB338061338}.Release|Any CPU.Build.0 = Release|Any CPU
+		{436C57F4-B21F-4C3B-934D-03C9CAC98387}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{436C57F4-B21F-4C3B-934D-03C9CAC98387}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{436C57F4-B21F-4C3B-934D-03C9CAC98387}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{436C57F4-B21F-4C3B-934D-03C9CAC98387}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
