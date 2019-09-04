@@ -11,7 +11,7 @@ namespace Magalu.Challenge.Web.Api.Services.AutoMapper.Profiles
         public DefaultProfile()
         {
             CreateMap<Product, GetProductModel>()
-                .ForMember(m => m.ReviewScore, s => s.MapFrom(p => p.CustomerReviews.AverageOrDefault(r => r.Score)));
+                .ForMember(m => m.ReviewScore, s => s.MapFrom(p => p.Reviews.AverageOrDefault(r => r.Score)));
 
             CreateMap<SendProductModel, Product>();
 
@@ -19,7 +19,13 @@ namespace Magalu.Challenge.Web.Api.Services.AutoMapper.Profiles
 
             CreateMap<SendCustomerModel, Customer>();
 
-            CreateMap<CustomerFavoriteProduct, GetFavoriteProductModel>();
+            CreateMap<SendFavoriteProductModel, FavoriteProduct>();
+
+            CreateMap<FavoriteProduct, GetFavoriteProductModel>();
+
+            CreateMap<SendProductReviewModel, ProductReview>();
+
+            CreateMap<ProductReview, GetProductReviewModel>();
         }
     }
 }

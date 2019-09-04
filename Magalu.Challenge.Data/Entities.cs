@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace Magalu.Challenge.Data
@@ -15,9 +16,9 @@ namespace Magalu.Challenge.Data
 
         public string Title { get; set; }
 
-        public virtual ICollection<CustomerProductReview> CustomerReviews { get; set; } = new Collection<CustomerProductReview>();
+        public virtual ICollection<ProductReview> Reviews { get; set; } = new Collection<ProductReview>();
 
-        public virtual ICollection<CustomerFavoriteProduct> FavoriteCustomers { get; set; } = new Collection<CustomerFavoriteProduct>();
+        public virtual ICollection<FavoriteProduct> FavoriteCustomers { get; set; } = new Collection<FavoriteProduct>();
     }
 
     public class Customer
@@ -28,12 +29,12 @@ namespace Magalu.Challenge.Data
 
         public string Email { get; set; }
 
-        public virtual ICollection<CustomerProductReview> ProductReviews { get; set; } = new Collection<CustomerProductReview>();
+        public virtual ICollection<ProductReview> ProductReviews { get; set; } = new Collection<ProductReview>();
 
-        public virtual ICollection<CustomerFavoriteProduct> FavoriteProducts { get; set; } = new Collection<CustomerFavoriteProduct>();
+        public virtual ICollection<FavoriteProduct> FavoriteProducts { get; set; } = new Collection<FavoriteProduct>();
     }
 
-    public class CustomerProductReview
+    public class ProductReview
     {
         public long ProductId { get; set; }
 
@@ -46,9 +47,11 @@ namespace Magalu.Challenge.Data
         public float Score { get; set; }
 
         public string Comments { get; set; }
+
+        public DateTime ReviewDateTime { get; set; }
     }
 
-    public class CustomerFavoriteProduct
+    public class FavoriteProduct
     {
         public long ProductId { get; set; }
 

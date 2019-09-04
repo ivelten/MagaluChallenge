@@ -23,18 +23,18 @@ namespace Magalu.Challenge.Web.Api.Controllers
         public override async Task<ActionResult<GetCustomerModel>> Post(SendCustomerModel model)
         {
             if (await Context.Customers.AnyAsync(c => c.Email == model.Email))
-                ModelState.AddModelError("Email", $"E-mail address '{model.Email}' is already being used by another customer.");
+                ModelState.AddModelError(nameof(model.Email), $"E-mail address '{model.Email}' is already being used by another customer.");
 
             return await base.Post(model);
         }
 
-        [HttpGet("{id}/favorite_products")]
+        [HttpGet("{id}/favorite_product")]
         public async Task<ActionResult<IEnumerable<GetProductModel>>> GetFavoriteProducts(long id, int? page)
         {
             var pageNumber = page.GetValueOrDefault(1);
 
             var products = await
-                Context.CustomerFavoriteProducts
+                Context.FavoriteProducts
                 .AsQueryable()
                 .Where(fp => fp.CustomerId == id)
                 .Select(fp => fp.Product)
@@ -44,37 +44,38 @@ namespace Magalu.Challenge.Web.Api.Controllers
             return Mapper.Map<GetProductModel[]>(products);
         }
 
-        [HttpPost("{id}/favorite_products")]
-        public async Task<ActionResult<GetFavoriteProductModel>> AddFavoriteProduct([FromRoute] long id, [FromBody] SendFavoriteProductModel model)
+        [HttpPost("{id}/favorite_product")]
+        public async Task<ActionResult<GetFavoriteProductModel>> PostFavoriteProduct(long id, [FromBody] SendFavoriteProductModel model)
         {
             if (!await Context.Customers.AnyAsync(c => c.Id == id))
                 return NotFound(null);
 
-            if (await Context.CustomerFavoriteProducts.AsQueryable().AnyAsync(fp => fp.ProductId == model.ProductId && fp.CustomerId == id))
-                ModelState.AddModelError("ProductId", $"Product with Id {model.ProductId} is already a favorite product of customer with Id {id}.");
+            if (!await Context.Products.AnyAsync(p => p.Id == model.ProductId))
+                ModelState.AddModelError(nameof(model.ProductId), $"Product with Id {model.ProductId} does not exist.");
+
+            if (await Context.FavoriteProducts.AsQueryable().AnyAsync(fp => fp.ProductId == model.ProductId && fp.CustomerId == id))
+                ModelState.AddModelError(nameof(model.ProductId), $"Product with Id {model.ProductId} is already a favorite product of customer with Id {id}.");
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var relationship = new CustomerFavoriteProduct
-            {
-                CustomerId = id,
-                ProductId = model.ProductId
-            };
+            var favorite = Mapper.Map<FavoriteProduct>(model);
 
-            await Context.AddAsync(relationship);
+            favorite.CustomerId = id;
+
+            await Context.AddAsync(favorite);
             await Context.SaveChangesAsync();
 
-            return Mapper.Map<GetFavoriteProductModel>(relationship);
+            return Mapper.Map<GetFavoriteProductModel>(favorite);
         }
 
-        [HttpDelete("{id}/favorite_products")]
-        public async Task<ActionResult<GetProductModel>> RemoveFavoriteProduct([FromRoute] long id, [FromBody] SendFavoriteProductModel model)
+        [HttpDelete("{id}/favorite_product")]
+        public async Task<ActionResult> DeleteFavoriteProduct(long id, [FromBody] DeleteFavoriteProductModel model)
         {
             if (!await Context.Customers.AnyAsync(c => c.Id == id))
                 return NotFound(null);
 
-            var relationship = await Context.CustomerFavoriteProducts.AsQueryable().SingleOrDefaultAsync(fp => fp.ProductId == model.ProductId && fp.CustomerId == id);
+            var relationship = await Context.FavoriteProducts.AsQueryable().SingleOrDefaultAsync(fp => fp.ProductId == model.ProductId && fp.CustomerId == id);
 
             if (relationship == null)
                 return NotFound(null);

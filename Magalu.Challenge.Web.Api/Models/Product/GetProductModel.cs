@@ -12,6 +12,6 @@
 
         public decimal Price { get; set; }
 
-        public float ReviewScore { get; set; }
+        public float? ReviewScore { get; set; }
     }
 }
