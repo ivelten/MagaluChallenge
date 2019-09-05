@@ -2,15 +2,15 @@
 using Magalu.Challenge.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.Extensions.Options;
 
 namespace Magalu.Challenge.Web.Api.Controllers
 {
-    public abstract class DataController<TEntity, TGetModel, TSendModel> : ConfigurableController where TEntity : class
+    public abstract class DataController<TEntity, TGetModel, TSendModel> : ControllerBase where TEntity : class
     {
         protected readonly MagaluContext Context;
 
@@ -21,15 +21,16 @@ namespace Magalu.Challenge.Web.Api.Controllers
         private readonly AllowedActions allowedActions;
 
         public DataController(
-            IConfiguration configuration, 
+            IOptions<PaginationOptions> paginationOptions,
             MagaluContext context,
             IMapper mapper,
             AllowedActions allowedActions)
-            : base(configuration)
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
             Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            DefaultPageSize = configuration.GetSection("Pagination").GetValue<int>("DefaultPageSize");
+
+            DefaultPageSize = paginationOptions?.Value?.DefaultPageSize ?? throw new ArgumentNullException(nameof(paginationOptions));
+
             this.allowedActions = allowedActions;
         }
 

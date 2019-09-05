@@ -29,9 +29,13 @@ namespace Magalu.Challenge.Data
 
         public string Email { get; set; }
 
+        public string Username { get; set; }
+
         public virtual ICollection<ProductReview> ProductReviews { get; set; } = new Collection<ProductReview>();
 
         public virtual ICollection<FavoriteProduct> FavoriteProducts { get; set; } = new Collection<FavoriteProduct>();
+
+        public virtual User User { get; set; }
     }
 
     public class ProductReview
@@ -62,18 +66,16 @@ namespace Magalu.Challenge.Data
         public virtual Customer Customer { get; set; }
     }
 
-    public enum Role
-    {
-        User = 0,
-        Administrator = 1
-    }
-
     public class User
     {
         public string Username { get; set; }
 
         public string PasswordHash { get; set; }
 
-        public Role Role { get; set; }
+        public string Role { get; set; }
+
+        public long? CustomerId { get; set; }
+
+        public virtual Customer Customer { get; set; }
     }
 }

@@ -3,11 +3,14 @@ using AutoMapper;
 using Magalu.Challenge.Data;
 using Magalu.Challenge.Web.Api.Models.Customer;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Magalu.Challenge.Web.Api.Models.Product;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authorization;
+using Magalu.Challenge.Web.Api.Services.Authorization;
+using System;
 
 namespace Magalu.Challenge.Web.Api.Controllers
 {
@@ -15,17 +18,37 @@ namespace Magalu.Challenge.Web.Api.Controllers
     [ApiController]
     public class CustomerController : DataController<Customer, GetCustomerModel, SendCustomerModel>
     {
-        public CustomerController(IConfiguration configuration, MagaluContext context, IMapper mapper)
-            : base(configuration, context, mapper, AllowedActions.All)
+        private readonly ICustomerAuthorizationService customerAuthorizationService;
+
+        public CustomerController(
+            IOptions<PaginationOptions> paginationOptions,
+            MagaluContext context,
+            IMapper mapper,
+            ICustomerAuthorizationService customerAuthorizationService)
+            : base(paginationOptions, context, mapper, AllowedActions.All)
         {
+            this.customerAuthorizationService = customerAuthorizationService ?? throw new ArgumentNullException(nameof(customerAuthorizationService));
         }
 
+        [Authorize(Roles = Roles.Administrator)]
         public override async Task<ActionResult<GetCustomerModel>> Post(SendCustomerModel model)
         {
             if (await Context.Customers.AnyAsync(c => c.Email == model.Email))
                 ModelState.AddModelError(nameof(model.Email), $"E-mail address '{model.Email}' is already being used by another customer.");
 
             return await base.Post(model);
+        }
+
+        [Authorize(Roles = Roles.Administrator)]
+        public override Task<ActionResult<GetCustomerModel>> Put(long id, [FromBody] SendCustomerModel model)
+        {
+            return base.Put(id, model);
+        }
+
+        [Authorize(Roles = Roles.Administrator)]
+        public override Task<ActionResult> Delete(long id)
+        {
+            return base.Delete(id);
         }
 
         [HttpGet("{id}/favorite_product")]
@@ -44,11 +67,12 @@ namespace Magalu.Challenge.Web.Api.Controllers
             return Mapper.Map<GetProductModel[]>(products);
         }
 
+        [Authorize]
         [HttpPost("{id}/favorite_product")]
         public async Task<ActionResult<GetFavoriteProductModel>> PostFavoriteProduct(long id, [FromBody] SendFavoriteProductModel model)
         {
-            if (!await Context.Customers.AnyAsync(c => c.Id == id))
-                return NotFound(null);
+            if (!customerAuthorizationService.CustomerIdIsAuthorized(id))
+                return Forbid();
 
             if (!await Context.Products.AnyAsync(p => p.Id == model.ProductId))
                 ModelState.AddModelError(nameof(model.ProductId), $"Product with Id {model.ProductId} does not exist.");
@@ -69,9 +93,13 @@ namespace Magalu.Challenge.Web.Api.Controllers
             return Mapper.Map<GetFavoriteProductModel>(favorite);
         }
 
+        [Authorize]
         [HttpDelete("{id}/favorite_product")]
         public async Task<ActionResult> DeleteFavoriteProduct(long id, [FromBody] DeleteFavoriteProductModel model)
         {
+            if (!customerAuthorizationService.CustomerIdIsAuthorized(id))
+                return Forbid();
+
             if (!await Context.Customers.AnyAsync(c => c.Id == id))
                 return NotFound(null);
 

@@ -30,6 +30,7 @@ namespace Magalu.Challenge.Data
                 customer.HasAlternateKey(c => c.Email);
                 customer.Property(c => c.Name).IsRequired().HasMaxLength(100);
                 customer.Property(c => c.Email).IsRequired().HasMaxLength(254);
+                customer.HasOne(c => c.User).WithOne(u => u.Customer).HasForeignKey<Customer>(c => c.Username);
                 customer.ToTable("customer");
             });
 
@@ -66,6 +67,9 @@ namespace Magalu.Challenge.Data
             {
                 user.HasKey(u => u.Username);
                 user.Property(u => u.Username).HasMaxLength(50);
+                user.Property(u => u.PasswordHash).HasMaxLength(1024);
+                user.Property(u => u.Role).HasMaxLength(50);
+                user.HasOne(u => u.Customer).WithOne(c => c.User).HasForeignKey<User>(u => u.CustomerId);
                 user.ToTable("user");
             });
         }

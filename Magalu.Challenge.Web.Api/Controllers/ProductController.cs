@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using Magalu.Challenge.Data;
 using Magalu.Challenge.Web.Api.Models.Product;
+using Magalu.Challenge.Web.Api.Services.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,9 +17,28 @@ namespace Magalu.Challenge.Web.Api.Controllers
     [ApiController]
     public class ProductController : DataController<Product, GetProductModel, SendProductModel>
     {
-        public ProductController(IConfiguration configuration, MagaluContext context, IMapper mapper)
-            : base(configuration, context, mapper, AllowedActions.Get | AllowedActions.GetPage | AllowedActions.Post | AllowedActions.Put)
+        private readonly ICustomerAuthorizationService customerAuthorizationService;
+
+        public ProductController(
+            IOptions<PaginationOptions> paginationOptions,
+            MagaluContext context, 
+            IMapper mapper,
+            ICustomerAuthorizationService customerAuthorizationService)
+            : base(paginationOptions, context, mapper, AllowedActions.Get | AllowedActions.GetPage | AllowedActions.Post | AllowedActions.Put)
         {
+            this.customerAuthorizationService = customerAuthorizationService ?? throw new ArgumentNullException(nameof(customerAuthorizationService));
+        }
+
+        [Authorize(Roles = Roles.Administrator)]
+        public override Task<ActionResult<GetProductModel>> Post([FromBody] SendProductModel model)
+        {
+            return base.Post(model);
+        }
+
+        [Authorize(Roles = Roles.Administrator)]
+        public override Task<ActionResult<GetProductModel>> Put(long id, [FromBody] SendProductModel model)
+        {
+            return base.Put(id, model);
         }
 
         [HttpGet("{id}/review")]
@@ -34,9 +56,13 @@ namespace Magalu.Challenge.Web.Api.Controllers
             return Mapper.Map<GetProductReviewModel[]>(reviews);
         }
 
+        [Authorize]
         [HttpPost("{id}/review")]
         public async Task<ActionResult<GetProductReviewModel>> PostReview(long id, [FromBody] SendProductReviewModel model)
         {
+            if (!customerAuthorizationService.CustomerIdIsAuthorized(id))
+                return Forbid();
+
             if (!await Context.Products.AnyAsync(p => p.Id == id))
                 return NotFound(null);
 
@@ -59,9 +85,13 @@ namespace Magalu.Challenge.Web.Api.Controllers
             return Mapper.Map<GetProductReviewModel>(review);
         }
 
+        [Authorize]
         [HttpPut("{id}/review")]
         public async Task<ActionResult<GetProductReviewModel>> PutReview(long id, [FromBody] SendProductReviewModel model)
         {
+            if (!customerAuthorizationService.CustomerIdIsAuthorized(id))
+                return Forbid();
+
             if (!await Context.Products.AnyAsync(p => p.Id == id))
                 return NotFound(null);
 
@@ -86,9 +116,13 @@ namespace Magalu.Challenge.Web.Api.Controllers
             return Mapper.Map<GetProductReviewModel>(review);
         }
 
+        [Authorize]
         [HttpDelete("{id}/review")]
         public async Task<ActionResult> DeleteReview(long id, [FromBody] DeleteProductReviewModel model)
         {
+            if (!customerAuthorizationService.CustomerIdIsAuthorized(id))
+                return Forbid();
+
             if (!await Context.Products.AnyAsync(c => c.Id == id))
                 return NotFound(null);
 
