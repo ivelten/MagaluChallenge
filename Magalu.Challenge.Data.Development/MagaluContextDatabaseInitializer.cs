@@ -20,7 +20,7 @@ namespace Magalu.Challenge.Data.Development
         {
             context.Database.EnsureCreated();
 
-            if (!context.Products.Any() && !context.Customers.Any())
+            if (!context.Products.Any() && !context.Customers.Any() && !context.Users.Any())
             {
                 var products = new Product[]
                 {
@@ -73,20 +73,18 @@ namespace Magalu.Challenge.Data.Development
                 };
 
                 context.FavoriteProducts.AddRange(favoriteProducts);
-            }
 
-            if (!context.Users.Any())
-            {
                 var users = new User[]
                 {
                     new User { Username = "user", PasswordHash = hashingService.HashPassword("user"), Role = Roles.User },
-                    new User { Username = "admin", PasswordHash = hashingService.HashPassword("admin"), Role = Roles.Administrator }
+                    new User { Username = "admin", PasswordHash = hashingService.HashPassword("admin"), Role = Roles.Administrator },
+                    new User { Username = "john", PasswordHash = hashingService.HashPassword("john"), Role = Roles.User, CustomerId = 1 }
                 };
 
                 context.Users.AddRange(users);
-            }
 
-            context.SaveChanges();
+                context.SaveChanges();
+            }
         }
     }
 }
