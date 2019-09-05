@@ -11,6 +11,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using Magalu.Challenge.Web.Api.Services.Authorization;
 using System;
+using Magalu.Challenge.Web.Api.Models.Shared;
 
 namespace Magalu.Challenge.Web.Api.Controllers
 {
@@ -109,6 +110,102 @@ namespace Magalu.Challenge.Web.Api.Controllers
                 return NotFound(null);
 
             Context.Remove(relationship);
+            await Context.SaveChangesAsync();
+
+            return Ok(null);
+        }
+
+        [HttpGet("{id}/product_review")]
+        public async Task<ActionResult<IEnumerable<GetProductReviewModel>>> GetProductReviews(long id, int? page)
+        {
+            var pageNumber = page.GetValueOrDefault(1);
+
+            var reviews = await
+                Context.ProductReviews
+                .AsQueryable()
+                .Where(pr => pr.CustomerId == id)
+                .SelectPage(pageNumber, DefaultPageSize)
+                .ToArrayAsync();
+
+            return Mapper.Map<GetProductReviewModel[]>(reviews);
+        }
+
+        [Authorize]
+        [HttpPut("{id}/product_review")]
+        public async Task<ActionResult<GetProductReviewModel>> PutReview(long id, [FromBody] SendProductReviewModel model)
+        {
+            if (!customerAuthorizationService.CustomerIdIsAuthorized(id))
+                return Forbid();
+
+            if (!await Context.Products.AnyAsync(p => p.Id == id))
+                return NotFound(null);
+
+            if (!await Context.Customers.AnyAsync(c => c.Id == model.CustomerId))
+                ModelState.AddModelError(nameof(model.CustomerId), $"Customer with Id {model.CustomerId} does not exist.");
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var review = await Context.ProductReviews.SingleOrDefaultAsync(fp => fp.CustomerId == model.CustomerId && fp.ProductId == id);
+
+            if (review == null)
+                return NotFound(null);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            Mapper.Map(model, review);
+
+            await Context.SaveChangesAsync();
+
+            return Mapper.Map<GetProductReviewModel>(review);
+        }
+
+        [Authorize]
+        [HttpPost("{id}/product_review")]
+        public async Task<ActionResult<GetProductReviewModel>> PostReview(long id, [FromBody] SendProductReviewModel model)
+        {
+            if (!customerAuthorizationService.CustomerIdIsAuthorized(id))
+                return Forbid();
+
+            if (!await Context.Products.AnyAsync(p => p.Id == id))
+                return NotFound(null);
+
+            if (!await Context.Customers.AnyAsync(c => c.Id == model.CustomerId))
+                ModelState.AddModelError(nameof(model.CustomerId), $"Customer with Id {model.CustomerId} does not exist.");
+
+            if (await Context.ProductReviews.AsQueryable().AnyAsync(fp => fp.CustomerId == model.CustomerId && fp.ProductId == id))
+                ModelState.AddModelError(nameof(model.CustomerId), $"Customer with id {model.CustomerId} already has a review for product with id {id}.");
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var review = Mapper.Map<ProductReview>(model);
+
+            review.ProductId = id;
+
+            await Context.AddAsync(review);
+            await Context.SaveChangesAsync();
+
+            return Mapper.Map<GetProductReviewModel>(review);
+        }
+
+        [Authorize]
+        [HttpDelete("{id}/product_review")]
+        public async Task<ActionResult> DeleteReview(long id, [FromBody] DeleteProductReviewModel model)
+        {
+            if (!customerAuthorizationService.CustomerIdIsAuthorized(id))
+                return Forbid();
+
+            if (!await Context.Products.AnyAsync(c => c.Id == id))
+                return NotFound(null);
+
+            var review = await Context.ProductReviews.AsQueryable().SingleOrDefaultAsync(fp => fp.CustomerId == model.CustomerId && fp.ProductId == id);
+
+            if (review == null)
+                return NotFound(null);
+
+            Context.Remove(review);
             await Context.SaveChangesAsync();
 
             return Ok(null);

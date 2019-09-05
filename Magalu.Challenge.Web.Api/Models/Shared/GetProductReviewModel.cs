@@ -1,4 +1,4 @@
-﻿namespace Magalu.Challenge.Web.Api.Models.Product
+﻿namespace Magalu.Challenge.Web.Api.Models.Shared
 {
     public class GetProductReviewModel
     {

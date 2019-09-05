@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Magalu.Challenge.Web.Api.Models.Product
+namespace Magalu.Challenge.Web.Api.Models.Customer
 {
     public class SendProductReviewModel
     {

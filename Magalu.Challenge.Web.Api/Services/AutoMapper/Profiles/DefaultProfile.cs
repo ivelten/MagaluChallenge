@@ -2,6 +2,7 @@
 using Magalu.Challenge.Data;
 using Magalu.Challenge.Web.Api.Models.Customer;
 using Magalu.Challenge.Web.Api.Models.Product;
+using Magalu.Challenge.Web.Api.Models.Shared;
 using System.Linq;
 
 namespace Magalu.Challenge.Web.Api.Services.AutoMapper.Profiles
