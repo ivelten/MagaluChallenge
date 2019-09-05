@@ -76,9 +76,9 @@ namespace Magalu.Challenge.Data.Development
 
                 var users = new User[]
                 {
-                    new User { Username = "user", PasswordHash = hashingService.HashPassword("user"), Role = Roles.User },
-                    new User { Username = "admin", PasswordHash = hashingService.HashPassword("admin"), Role = Roles.Administrator },
-                    new User { Username = "john", PasswordHash = hashingService.HashPassword("john"), Role = Roles.User, CustomerId = 1 }
+                    new User { Username = "user", PasswordHash = hashingService.HashPassword("userpw"), Role = Roles.User },
+                    new User { Username = "admin", PasswordHash = hashingService.HashPassword("adminpw"), Role = Roles.Administrator },
+                    new User { Username = "john", PasswordHash = hashingService.HashPassword("johnpw"), Role = Roles.User, CustomerId = 1 }
                 };
 
                 context.Users.AddRange(users);

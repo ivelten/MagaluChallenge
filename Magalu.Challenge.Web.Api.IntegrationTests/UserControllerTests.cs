@@ -1,38 +1,27 @@
 ﻿using System.Threading.Tasks;
 using Xunit;
 using FluentAssertions;
+using Magalu.Challenge.Web.Api.IntegrationTests.Fixtures;
 
 namespace Magalu.Challenge.Web.Api.IntegrationTests
 {
     public class UserControllerTests : TestBase
     {
-        [Fact]
-        public async Task Should_Be_Able_To_Authenticate_User()
+        public UserControllerTests(TestServerFixture testServerFixture)
+            : base(testServerFixture)
         {
-            var result = await Authenticator.AuthenticateAsync("user", "user");
-
-            result.Should().NotBeNull();
-            result.Username.Should().Be("user");
-            result.JwtToken.Should().NotBeNullOrWhiteSpace();
         }
 
-        [Fact]
-        public async Task Should_Be_Able_To_Authenticate_Administrator()
+        [Theory]
+        [InlineData("user", "userpw")]
+        [InlineData("admin", "adminpw")]
+        [InlineData("john", "johnpw")]
+        public async Task Should_Be_Able_To_Authenticate_User(string username, string password)
         {
-            var result = await Authenticator.AuthenticateAsync("admin", "admin");
+            var result = await Authenticator.AuthenticateAsync(username, password);
 
             result.Should().NotBeNull();
-            result.Username.Should().Be("admin");
-            result.JwtToken.Should().NotBeNullOrWhiteSpace();
-        }
-
-        [Fact]
-        public async Task Should_Be_Able_To_Authenticate_Customer()
-        {
-            var result = await Authenticator.AuthenticateAsync("john", "john");
-
-            result.Should().NotBeNull();
-            result.Username.Should().Be("john");
+            result.Username.Should().Be(username);
             result.JwtToken.Should().NotBeNullOrWhiteSpace();
         }
     }
