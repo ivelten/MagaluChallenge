@@ -40,9 +40,35 @@ namespace Magalu.Challenge.Web.Api.IntegrationTests
             }
         }
 
+        [Fact]
+        public async Task GetPage_Without_Page_Number_Should_Return_First_Page()
+        {
+            using (var client = Server.CreateClient())
+            {
+                var response = await client.GetAsync($"/api/customer");
+
+                response.EnsureSuccessStatusCode();
+
+                var expectedItems = DatabaseSeeds.Customers.Take(PaginationOptions.DefaultPageSize).ToArray();
+                var actualItems = await response.Content.ReadAsAsync<GetCustomerModel[]>();
+
+                actualItems.Length.Should().Be(expectedItems.Length);
+
+                actualItems.ForEach((i, actual) =>
+                {
+                    var expected = expectedItems[i];
+
+                    actual.Id.Should().Be(expected.Id);
+                    actual.Name.Should().Be(expected.Name);
+                    actual.Email.Should().Be(expected.Email);
+                });
+            }
+        }
+
         [Theory]
         [InlineData(1)]
-        public async Task GetPage_Should_Return_Expected_Value(int pageNumber)
+        [InlineData(2)]
+        public async Task GetPage_With_Page_Number_Should_Return_Desired_Page(int pageNumber)
         {
             using (var client = Server.CreateClient())
             {

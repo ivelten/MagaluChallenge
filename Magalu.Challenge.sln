@@ -13,7 +13,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Magalu.Challenge.Security",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Magalu.Challenge.Data.Development", "Magalu.Challenge.Data.Development\Magalu.Challenge.Data.Development.csproj", "{436C57F4-B21F-4C3B-934D-03C9CAC98387}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Magalu.Challenge.Web.Api.IntegrationTests", "Magalu.Challenge.Web.Api.IntegrationTests\Magalu.Challenge.Web.Api.IntegrationTests.csproj", "{25DFDB79-10F3-45AC-BC7B-816B83768BFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Magalu.Challenge.Web.Api.IntegrationTests", "Magalu.Challenge.Web.Api.IntegrationTests\Magalu.Challenge.Web.Api.IntegrationTests.csproj", "{25DFDB79-10F3-45AC-BC7B-816B83768BFF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{630B5ED9-BD6F-4277-A5BE-874FD80A8791}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{DE73DF6A-1A68-4337-BF4E-FFBAD2799350}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{084E2A36-93DE-4428-81D4-85559D824389}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +57,14 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2284EBDC-F3CE-4003-84EB-7A6DE86E2911} = {DE73DF6A-1A68-4337-BF4E-FFBAD2799350}
+		{03F028CD-BB11-43DA-93F1-80871FA3FF80} = {DE73DF6A-1A68-4337-BF4E-FFBAD2799350}
+		{4A579EDD-D612-43AC-B29D-BA65A42F7AFB} = {DE73DF6A-1A68-4337-BF4E-FFBAD2799350}
+		{AC98D67B-20D3-4991-890C-4EB338061338} = {DE73DF6A-1A68-4337-BF4E-FFBAD2799350}
+		{436C57F4-B21F-4C3B-934D-03C9CAC98387} = {DE73DF6A-1A68-4337-BF4E-FFBAD2799350}
+		{25DFDB79-10F3-45AC-BC7B-816B83768BFF} = {630B5ED9-BD6F-4277-A5BE-874FD80A8791}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {35635CAC-59C8-41BE-93B4-51AFAAA5672D}
