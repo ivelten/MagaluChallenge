@@ -67,6 +67,8 @@ namespace Magalu.Challenge.Web.Api
                 options.SuppressModelStateInvalidFilter = true;
             });
 
+            services.AddHealthChecks();
+
             services
                 .AddAuthentication(options =>
                 {
@@ -109,6 +111,7 @@ namespace Magalu.Challenge.Web.Api
             else
                 app.UseHsts();
 
+            app.UseHealthChecks("/api/health");
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
