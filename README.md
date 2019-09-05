@@ -1,6 +1,6 @@
 # Magalu Challenge
 
-This project was made as a challenge for Magazine Luiza's hiring process.
+This project was made as a challenge for Magazine Luiza's job interview process.
 
 ## Building this project
 
