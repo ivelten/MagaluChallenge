@@ -1,6 +1,7 @@
 ﻿using Magalu.Challenge.Web.Api.Models.User;
 using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace Magalu.Challenge.Web.Api.IntegrationTests
@@ -28,6 +29,16 @@ namespace Magalu.Challenge.Web.Api.IntegrationTests
                 return null;
 
             return await response.Content.ReadAsAsync<AuthenticatedUserModel>();
+        }
+
+        public async Task AuthenticateClientAsync(HttpClient client, string username, string password)
+        {
+            var authResult = await AuthenticateAsync(username, password);
+
+            if (authResult == null)
+                throw new InvalidOperationException($"Authentication for username '{username}' has failed.");
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authResult.JwtToken);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Magalu.Challenge.Web.Api
     {
         private readonly IConfiguration configuration;
 
-        private readonly bool isDevelopmentEnvironment;
+        private readonly EnvironmentType environmentType;
 
         public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
@@ -32,7 +32,7 @@ namespace Magalu.Challenge.Web.Api
             if (hostingEnvironment == null)
                 throw new ArgumentNullException(nameof(hostingEnvironment));
 
-            isDevelopmentEnvironment = hostingEnvironment.IsDevelopment();
+            environmentType = (EnvironmentType)Enum.Parse(typeof(EnvironmentType), hostingEnvironment.EnvironmentName);
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -77,7 +77,7 @@ namespace Magalu.Challenge.Web.Api
                 })
                 .AddJwtBearer(options =>
                 {
-                    options.RequireHttpsMetadata = !isDevelopmentEnvironment;
+                    options.RequireHttpsMetadata = environmentType != EnvironmentType.Production;
                     options.SaveToken = true;
 
                     var key = Convert.FromBase64String(configuration.GetSection("SecurityOptions").GetValue<string>("JwtSecret"));
@@ -91,7 +91,7 @@ namespace Magalu.Challenge.Web.Api
                     };
                 });
 
-            if (isDevelopmentEnvironment)
+            if (environmentType == EnvironmentType.Development)
             {
                 var serviceProvider = services.BuildServiceProvider();
 
@@ -106,7 +106,7 @@ namespace Magalu.Challenge.Web.Api
 
         public void Configure(IApplicationBuilder app)
         {
-            if (isDevelopmentEnvironment)
+            if (environmentType == EnvironmentType.Development)
                 app.UseDeveloperExceptionPage();
             else
                 app.UseHsts();

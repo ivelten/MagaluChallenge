@@ -27,7 +27,7 @@ namespace Magalu.Challenge.Data
             builder.Entity<Customer>(customer =>
             {
                 customer.HasKey(c => c.Id);
-                customer.HasAlternateKey(c => c.Email);
+                customer.HasIndex(c => c.Email);
                 customer.Property(c => c.Name).IsRequired().HasMaxLength(100);
                 customer.Property(c => c.Email).IsRequired().HasMaxLength(254);
                 customer.HasOne(c => c.User).WithOne(u => u.Customer).HasForeignKey<Customer>(c => c.Username);

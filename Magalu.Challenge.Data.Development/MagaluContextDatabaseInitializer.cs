@@ -18,6 +18,7 @@ namespace Magalu.Challenge.Data.Development
 
         public void InitializeDevelopmentEnvironmentDatabase()
         {
+            context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
             if (!context.Products.Any() && !context.Customers.Any() && !context.Users.Any())
@@ -32,9 +33,9 @@ namespace Magalu.Challenge.Data.Development
 
                 var users = new User[]
                 {
-                    new User { Username = "user", PasswordHash = hashingService.HashPassword("userpw"), Role = Roles.User },
-                    new User { Username = "admin", PasswordHash = hashingService.HashPassword("adminpw"), Role = Roles.Administrator },
-                    new User { Username = "john", PasswordHash = hashingService.HashPassword("johnpw"), Role = Roles.User, CustomerId = 1 }
+                    new User { Username = DatabaseSeeds.UserUsername, PasswordHash = hashingService.HashPassword(DatabaseSeeds.UserPassword), Role = Roles.User },
+                    new User { Username = DatabaseSeeds.AdminUsername, PasswordHash = hashingService.HashPassword(DatabaseSeeds.AdminPassword), Role = Roles.Administrator },
+                    new User { Username = DatabaseSeeds.CustomerUsername, PasswordHash = hashingService.HashPassword(DatabaseSeeds.CustomerPassword), Role = Roles.User, CustomerId = 1 }
                 };
 
                 context.Users.AddRange(users);

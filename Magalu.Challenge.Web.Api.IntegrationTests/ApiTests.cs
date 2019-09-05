@@ -1,5 +1,4 @@
 using FluentAssertions;
-using Magalu.Challenge.Web.Api.IntegrationTests.Fixtures;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -15,13 +14,16 @@ namespace Magalu.Challenge.Web.Api.IntegrationTests
         [Fact]
         public async Task Health_Endpoint_Must_Return_Healthy_Status()
         {
-            using (var response = await Client.GetAsync("/api/health"))
+            using (var client = Server.CreateClient())
             {
-                response.EnsureSuccessStatusCode();
+                using (var response = await client.GetAsync("/api/health"))
+                {
+                    response.EnsureSuccessStatusCode();
 
-                var content = await response.Content.ReadAsStringAsync();
+                    var content = await response.Content.ReadAsStringAsync();
 
-                content.Should().Be("Healthy");
+                    content.Should().Be("Healthy");
+                }
             }
         }
     }

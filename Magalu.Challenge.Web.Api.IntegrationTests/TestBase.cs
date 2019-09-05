@@ -1,5 +1,4 @@
-﻿using Magalu.Challenge.Web.Api.IntegrationTests.Fixtures;
-using System.Net.Http;
+﻿using Microsoft.AspNetCore.TestHost;
 using Xunit;
 
 namespace Magalu.Challenge.Web.Api.IntegrationTests
@@ -7,14 +6,20 @@ namespace Magalu.Challenge.Web.Api.IntegrationTests
     [Collection(TestServerCollection.Name)]
     public abstract class TestBase
     {
-        protected readonly HttpClient Client;
+        protected readonly TestServer Server;
 
-        protected readonly ApiAuthenticator Authenticator;
+        protected readonly PaginationOptions PaginationOptions;
+
+        protected readonly SecurityOptions SecurityOptions;
+
+        protected readonly ConnectionStrings ConnectionStrings;
 
         public TestBase(TestServerFixture testServerFixture)
         {
-            Client = testServerFixture.Server.CreateClient();
-            Authenticator = new ApiAuthenticator(Client);
+            Server = testServerFixture.Server;
+            PaginationOptions = testServerFixture.PaginationOptions;
+            SecurityOptions = testServerFixture.SecurityOptions;
+            ConnectionStrings = testServerFixture.ConnectionStrings;
         }
     }
 }

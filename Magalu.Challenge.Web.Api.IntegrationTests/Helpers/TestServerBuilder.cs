@@ -6,16 +6,19 @@ namespace Magalu.Challenge.Web.Api.IntegrationTests
 {
     public static class TestServerBuilder
     {
-        public static TestServer Build()
+        public static IConfiguration BuildConfiguration()
         {
-            var configuration = 
+            return 
                 new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
                 .Build();
+        }
 
+        public static TestServer BuildServer(IConfiguration configuration)
+        {
             var builder =
                 new WebHostBuilder()
-                .UseEnvironment("Development")
+                .UseEnvironment(EnvironmentType.Development.ToString())
                 .UseConfiguration(configuration)
                 .UseStartup<Startup>();
 
