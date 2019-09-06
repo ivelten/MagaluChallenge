@@ -1,4 +1,5 @@
 ﻿using System;
+using Magalu.Challenge.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Magalu.Challenge.Data

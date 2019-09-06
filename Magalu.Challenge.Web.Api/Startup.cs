@@ -1,16 +1,14 @@
 ﻿using AutoMapper;
+using Magalu.Challenge.Application;
+using Magalu.Challenge.ApplicationServices;
+using Magalu.Challenge.ApplicationServices.AutoMapper.Profiles;
 using Magalu.Challenge.Data;
 using Magalu.Challenge.Data.Development;
-using Magalu.Challenge.Security;
-using Magalu.Challenge.Shared.Abstractions;
-using Magalu.Challenge.Web.Api.Services.Authentication;
-using Magalu.Challenge.Web.Api.Services.Authorization;
-using Magalu.Challenge.Web.Api.Services.AutoMapper.Profiles;
+using Magalu.Challenge.Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -50,17 +48,10 @@ namespace Magalu.Challenge.Web.Api
 
             services.Configure<SecurityOptions>(configuration.GetSection("SecurityOptions"));
             services.Configure<PaginationOptions>(configuration.GetSection("PaginationOptions"));
-            services.Configure<ConnectionStrings>(configuration.GetSection("ConnectionStrings"));
 
-            services.AddDbContext<MagaluContext>(options =>
-            {
-                var connectionString = configuration.GetSection("ConnectionStrings").GetValue<string>("MagaluDatabase");
+            services.AddMagaluRepositories(configuration.GetSection("ConnectionStrings").GetValue<string>("MagaluDatabase"));
 
-                options.UseMySql(connectionString);
-                options.UseLazyLoadingProxies();
-            });
-
-            services.AddAutoMapper(typeof(DefaultProfile));
+            services.AddAutoMapper(typeof(DomainToApplicationProfile), typeof(ApplicationToDomainProfile));
 
             services.Configure<ApiBehaviorOptions>(options =>
             {
@@ -108,8 +99,12 @@ namespace Magalu.Challenge.Web.Api
         {
             if (environmentType == EnvironmentType.Development)
                 app.UseDeveloperExceptionPage();
-            else
+
+
+            if (environmentType == EnvironmentType.Production)
+            {
                 app.UseHsts();
+            }
 
             app.UseHealthChecks("/api/health");
             app.UseAuthentication();

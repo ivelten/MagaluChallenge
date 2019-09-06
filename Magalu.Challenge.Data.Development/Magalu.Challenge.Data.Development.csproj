@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Magalu.Challenge.ApplicationServices\Magalu.Challenge.ApplicationServices.csproj" />
     <ProjectReference Include="..\Magalu.Challenge.Data\Magalu.Challenge.Data.csproj" />
     <ProjectReference Include="..\Magalu.Challenge.Shared\Magalu.Challenge.Shared.csproj" />
   </ItemGroup>

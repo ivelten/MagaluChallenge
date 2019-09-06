@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.TestHost;
+﻿using Magalu.Challenge.Application;
+using Magalu.Challenge.Domain;
+using Microsoft.AspNetCore.TestHost;
 using Xunit;
 
 namespace Magalu.Challenge.Web.Api.IntegrationTests
@@ -12,14 +14,11 @@ namespace Magalu.Challenge.Web.Api.IntegrationTests
 
         protected readonly SecurityOptions SecurityOptions;
 
-        protected readonly ConnectionStrings ConnectionStrings;
-
         public TestBase(TestServerFixture testServerFixture)
         {
             Server = testServerFixture.Server;
             PaginationOptions = testServerFixture.PaginationOptions;
             SecurityOptions = testServerFixture.SecurityOptions;
-            ConnectionStrings = testServerFixture.ConnectionStrings;
         }
     }
 }

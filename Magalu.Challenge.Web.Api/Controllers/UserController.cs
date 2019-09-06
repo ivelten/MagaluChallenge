@@ -1,5 +1,5 @@
-﻿using Magalu.Challenge.Web.Api.Models.User;
-using Magalu.Challenge.Web.Api.Services.Authentication;
+﻿using Magalu.Challenge.Application.Models.User;
+using Magalu.Challenge.ApplicationServices;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;

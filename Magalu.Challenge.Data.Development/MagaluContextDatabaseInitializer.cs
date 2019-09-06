@@ -1,4 +1,6 @@
-﻿using Magalu.Challenge.Shared.Abstractions;
+﻿using Magalu.Challenge.ApplicationServices;
+using Magalu.Challenge.Domain;
+using Magalu.Challenge.Domain.Entities;
 using System;
 using System.Linq;
 

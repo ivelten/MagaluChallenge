@@ -1,17 +1,18 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
 using Magalu.Challenge.Data;
-using Magalu.Challenge.Web.Api.Models.Customer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Magalu.Challenge.Web.Api.Models.Product;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
-using Magalu.Challenge.Web.Api.Services.Authorization;
 using System;
-using Magalu.Challenge.Web.Api.Models.Shared;
+using Magalu.Challenge.Domain;
+using Magalu.Challenge.Domain.Entities;
+using Magalu.Challenge.Application.Models.Customer;
+using Magalu.Challenge.ApplicationServices;
+using Magalu.Challenge.Application.Models.Product;
 
 namespace Magalu.Challenge.Web.Api.Controllers
 {

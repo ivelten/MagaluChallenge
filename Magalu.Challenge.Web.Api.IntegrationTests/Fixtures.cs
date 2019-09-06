@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
+using Magalu.Challenge.Domain;
+using Magalu.Challenge.Application;
 using System;
 using Xunit;
 
@@ -11,7 +13,6 @@ namespace Magalu.Challenge.Web.Api.IntegrationTests
         {
             var configuration = TestServerBuilder.BuildConfiguration();
 
-            ConnectionStrings = configuration.GetSection("ConnectionStrings").Get<ConnectionStrings>();
             PaginationOptions = configuration.GetSection("PaginationOptions").Get<PaginationOptions>();
             SecurityOptions = configuration.GetSection("SecurityOptions").Get<SecurityOptions>();
 
@@ -19,8 +20,6 @@ namespace Magalu.Challenge.Web.Api.IntegrationTests
         }
 
         public TestServer Server { get; private set; }
-
-        public ConnectionStrings ConnectionStrings { get; private set; }
 
         public SecurityOptions SecurityOptions { get; private set; }
 

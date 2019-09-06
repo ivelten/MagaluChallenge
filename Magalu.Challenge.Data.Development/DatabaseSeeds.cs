@@ -1,4 +1,7 @@
-﻿namespace Magalu.Challenge.Data.Development
+﻿using Magalu.Challenge.Domain;
+using Magalu.Challenge.Domain.Entities;
+
+namespace Magalu.Challenge.Data.Development
 {
     public static class DatabaseSeeds
     {

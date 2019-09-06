@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
+using Magalu.Challenge.Application.Models.Customer;
 using Magalu.Challenge.Data.Development;
-using Magalu.Challenge.Web.Api.Models.Customer;
 using System.Linq;
 using System.Net;
 using System.Net.Http;

@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
+using Magalu.Challenge.Application.Models.Product;
 using Magalu.Challenge.Data;
-using Magalu.Challenge.Web.Api.Models.Product;
-using Magalu.Challenge.Web.Api.Models.Shared;
+using Magalu.Challenge.Domain;
+using Magalu.Challenge.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
