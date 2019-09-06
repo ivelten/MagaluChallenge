@@ -1,4 +1,5 @@
 ﻿using Magalu.Challenge.Domain.Entities;
+using Magalu.Challenge.Infrastructure.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,7 +20,8 @@ namespace Magalu.Challenge.Data
                 .AddCustomRepository<Product, Repository<Product>>()
                 .AddCustomRepository<ProductReview, Repository<ProductReview>>()
                 .AddCustomRepository<FavoriteProduct, Repository<FavoriteProduct>>()
-                .AddCustomRepository<User, Repository<User>>();
+                .AddCustomRepository<User, Repository<User>>()
+                .AddCustomRepository<RequestResponseLog, Repository<RequestResponseLog>>();
         }
     }
 }

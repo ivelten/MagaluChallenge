@@ -1,5 +1,6 @@
 ﻿using System;
 using Magalu.Challenge.Domain.Entities;
+using Magalu.Challenge.Infrastructure.Logging;
 using Microsoft.EntityFrameworkCore;
 
 namespace Magalu.Challenge.Data
@@ -20,6 +21,8 @@ namespace Magalu.Challenge.Data
         public DbSet<FavoriteProduct> FavoriteProducts { get; set; }
 
         public DbSet<User> Users { get; set; }
+
+        public DbSet<RequestResponseLog> RequestResponseLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -72,6 +75,16 @@ namespace Magalu.Challenge.Data
                 user.Property(u => u.Role).HasMaxLength(50);
                 user.HasOne(u => u.Customer).WithOne(c => c.User).HasForeignKey<User>(u => u.CustomerId);
                 user.ToTable("user");
+            });
+
+            builder.Entity<RequestResponseLog>(log =>
+            {
+                log.HasKey(l => l.Id);
+                log.Property(l => l.RequestUrl).HasMaxLength(2048);
+                log.Property(l => l.RequestBody).HasMaxLength(4096);
+                log.Property(l => l.ResponseBody).HasMaxLength(4096);
+                log.Property(l => l.RemoteAddress).HasMaxLength(45);
+                log.ToTable("request_response_log");
             });
         }
     }

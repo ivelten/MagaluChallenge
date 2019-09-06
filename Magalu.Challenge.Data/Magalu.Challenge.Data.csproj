@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Magalu.Challenge.Domain\Magalu.Challenge.Domain.csproj" />
+    <ProjectReference Include="..\Magalu.Challenge.Infrastructure\Magalu.Challenge.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

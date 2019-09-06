@@ -2,6 +2,7 @@
 using Magalu.Challenge.ApplicationServices;
 using Magalu.Challenge.Data;
 using Magalu.Challenge.Data.Development;
+using Magalu.Challenge.Infrastructure.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -53,9 +54,9 @@ namespace Magalu.Challenge.Web.Api
 
 
             if (environmentType == EnvironmentType.Production)
-            {
                 app.UseHsts();
-            }
+
+            app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
             app.UseHealthChecks("/api/health");
             app.UseAuthentication();

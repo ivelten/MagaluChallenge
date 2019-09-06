@@ -16,6 +16,6 @@ namespace Magalu.Challenge.Domain.Entities
 
         public string Comments { get; set; }
 
-        public DateTime ReviewDateTime { get; set; }
+        public DateTime ReviewDateTime { get; set; } = DateTime.Now;
     }
 }
