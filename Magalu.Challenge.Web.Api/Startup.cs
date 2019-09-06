@@ -1,17 +1,12 @@
-﻿using AutoMapper;
-using Magalu.Challenge.Application;
+﻿using Magalu.Challenge.Application;
 using Magalu.Challenge.ApplicationServices;
-using Magalu.Challenge.ApplicationServices.AutoMapper.Profiles;
 using Magalu.Challenge.Data;
 using Magalu.Challenge.Data.Development;
-using Magalu.Challenge.Domain;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
 
