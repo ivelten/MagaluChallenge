@@ -40,59 +40,15 @@ namespace Magalu.Challenge.Web.Api
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options => options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore);
 
-            services.AddHttpContextAccessor();
-
-            services.AddTransient<IHashingService, BCryptHashingService>();
-            services.AddTransient<IAuthenticationService, AuthenticationService>();
-            services.AddTransient<ICustomerAuthorizationService, CustomerAuthorizationService>();
-
-            services.Configure<SecurityOptions>(configuration.GetSection("SecurityOptions"));
-            services.Configure<PaginationOptions>(configuration.GetSection("PaginationOptions"));
-
-            services.AddMagaluRepositories(configuration.GetSection("ConnectionStrings").GetValue<string>("MagaluDatabase"));
-
-            services.AddAutoMapper(typeof(DomainToApplicationProfile), typeof(ApplicationToDomainProfile));
-
-            services.Configure<ApiBehaviorOptions>(options =>
-            {
-                options.SuppressModelStateInvalidFilter = true;
-            });
+            services.ConfigureMagaluRepositories(configuration.GetSection("ConnectionStrings").GetValue<string>("MagaluDatabase"));
+            services.ConfigureMagaluApplicationServices(configuration);
 
             services.AddHealthChecks();
 
-            services
-                .AddAuthentication(options =>
-                {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer(options =>
-                {
-                    options.RequireHttpsMetadata = environmentType != EnvironmentType.Production;
-                    options.SaveToken = true;
-
-                    var key = Convert.FromBase64String(configuration.GetSection("SecurityOptions").GetValue<string>("JwtSecret"));
-
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-                    };
-                });
+            services.ConfigureMagaluAuthentication(environmentType, configuration);
 
             if (environmentType == EnvironmentType.Development)
-            {
-                var serviceProvider = services.BuildServiceProvider();
-
-                var context = serviceProvider.GetService<MagaluContext>();
-                var hashingService = serviceProvider.GetService<IHashingService>();
-
-                var databaseInitializer = new MagaluContextDatabaseInitializer(context, hashingService);
-
-                databaseInitializer.InitializeDevelopmentEnvironmentDatabase();
-            }
+                services.ConfigureDevelopmentDatabase();
         }
 
         public void Configure(IApplicationBuilder app)

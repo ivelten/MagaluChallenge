@@ -6,16 +6,16 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
+using Magalu.Challenge.Application;
 
 using Claim = System.Security.Claims.Claim;
 using ClaimsIdentity = System.Security.Claims.ClaimsIdentity;
-using Magalu.Challenge.Application;
 
 namespace Magalu.Challenge.ApplicationServices
 {
     public interface IAuthenticationService
     {
-        Task<string> AuthenticateAsync(string username, string password);
+        Task<AuthenticationResult> AuthenticateAsync(string username, string password);
     }
 
     public class AuthenticationService : IAuthenticationService
@@ -33,15 +33,19 @@ namespace Magalu.Challenge.ApplicationServices
             this.securityOptions = securityOptions?.Value ?? throw new ArgumentNullException(nameof(securityOptions));
         }
 
-        public async Task<string> AuthenticateAsync(string username, string password)
+        public async Task<AuthenticationResult> AuthenticateAsync(string username, string password)
         {
+            if (username == null) throw new ArgumentNullException(nameof(username));
+
+            if (password == null) throw new ArgumentNullException(nameof(password));
+
             var user = await userRepository.GetFirstOrDefaultAsync(
                 u => u,
                 predicate: u => u.Username == username,
                 include: source => source.Include(u => u.Customer));
 
-            if (!hashingService.VerifyPassword(password, user.PasswordHash))
-                return null;
+            if (user == null || !hashingService.VerifyPassword(password, user.PasswordHash))
+                AuthenticationResult.Error("Invalid username and/or password.");
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Convert.FromBase64String(securityOptions.JwtSecret);
@@ -68,7 +72,7 @@ namespace Magalu.Challenge.ApplicationServices
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return tokenHandler.WriteToken(token);
+            return AuthenticationResult.Success(username, tokenHandler.WriteToken(token));
         }
     }
 }

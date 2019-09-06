@@ -8,7 +8,7 @@ namespace Magalu.Challenge.Web.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : ApplicationController
     {
         private readonly IAuthenticationService authenticationService;
 
@@ -20,19 +20,7 @@ namespace Magalu.Challenge.Web.Api.Controllers
         [HttpPost("authenticate")]
         public async Task<ActionResult<AuthenticatedUserModel>> Authenticate([FromBody] AuthenticateUserModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var token = await authenticationService.AuthenticateAsync(model.Username, model.Password);
-
-            if (token == null)
-                return BadRequest(new { Message = "Invalid username and/or password." });
-
-            return new AuthenticatedUserModel
-            {
-                Username = model.Username,
-                JwtToken = token
-            };
+            return GetResult(await authenticationService.AuthenticateAsync(model.Username, model.Password));
         }
     }
 }

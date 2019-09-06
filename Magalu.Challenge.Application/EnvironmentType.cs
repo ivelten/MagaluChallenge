@@ -1,4 +1,4 @@
-﻿namespace Magalu.Challenge.Web.Api
+﻿namespace Magalu.Challenge.Application
 {
     public enum EnvironmentType
     {

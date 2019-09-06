@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
-using Magalu.Challenge.Domain;
 using Magalu.Challenge.Application;
 using System;
 using Xunit;

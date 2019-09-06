@@ -6,7 +6,7 @@ namespace Magalu.Challenge.Data
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddMagaluRepositories(this IServiceCollection services, string connectionString)
+        public static IServiceCollection ConfigureMagaluRepositories(this IServiceCollection services, string connectionString)
         {
             return services
                 .AddScoped<DbContext, MagaluContext>()

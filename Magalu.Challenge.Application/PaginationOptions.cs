@@ -1,4 +1,4 @@
-﻿namespace Magalu.Challenge.Domain
+﻿namespace Magalu.Challenge.Application
 {
     public class PaginationOptions
     {

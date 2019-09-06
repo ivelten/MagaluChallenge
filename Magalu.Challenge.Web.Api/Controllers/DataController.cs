@@ -1,37 +1,22 @@
-﻿using AutoMapper;
-using Magalu.Challenge.Data;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Linq;
-using Microsoft.Extensions.Options;
-using Magalu.Challenge.Domain;
+using Magalu.Challenge.ApplicationServices;
 
 namespace Magalu.Challenge.Web.Api.Controllers
 {
-    public abstract class DataController<TEntity, TGetModel, TSendModel> : ControllerBase where TEntity : class
+    public abstract class DataController<TEntity, TGetModel, TSendModel> : ApplicationController where TEntity : class
     {
-        protected readonly MagaluContext Context;
-
-        protected readonly IMapper Mapper;
-
-        protected readonly int DefaultPageSize;
+        protected readonly IDataService<TEntity, TGetModel, TSendModel> DataService;
 
         private readonly AllowedActions allowedActions;
 
         public DataController(
-            IOptions<PaginationOptions> paginationOptions,
-            MagaluContext context,
-            IMapper mapper,
+            IDataService<TEntity, TGetModel, TSendModel> dataService,
             AllowedActions allowedActions)
         {
-            Context = context ?? throw new ArgumentNullException(nameof(context));
-            Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-
-            DefaultPageSize = paginationOptions?.Value?.DefaultPageSize ?? throw new ArgumentNullException(nameof(paginationOptions));
-
+            DataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
             this.allowedActions = allowedActions;
         }
 
@@ -41,12 +26,7 @@ namespace Magalu.Challenge.Web.Api.Controllers
             if (!allowedActions.HasFlag(AllowedActions.Get))
                 return NotFound(null);
 
-            var entity = await Context.Set<TEntity>().FindAsync(id);
-
-            if (entity == null)
-                return NotFound(null);
-            else
-                return Mapper.Map<TGetModel>(entity);
+            return GetResult(await DataService.GetAsync(id));
         }
 
         [HttpGet]
@@ -55,11 +35,7 @@ namespace Magalu.Challenge.Web.Api.Controllers
             if (!allowedActions.HasFlag(AllowedActions.GetPage))
                 return NotFound(null);
 
-            var pageNumber = page.GetValueOrDefault(1);
-
-            var entities = await Context.Set<TEntity>().AsQueryable().SelectPage(pageNumber, DefaultPageSize).ToArrayAsync();
-
-            return Mapper.Map<TGetModel[]>(entities);
+            return GetResult(await DataService.GetPageAsync(page));
         }
 
         [HttpPost]
@@ -68,15 +44,9 @@ namespace Magalu.Challenge.Web.Api.Controllers
             if (!allowedActions.HasFlag(AllowedActions.Post))
                 return NotFound(null);
 
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            var result = await DataService.SaveAsync(model);
 
-            var entity = Mapper.Map<TEntity>(model);
-
-            await Context.AddAsync(entity);
-            await Context.SaveChangesAsync();
-
-            return Mapper.Map<TGetModel>(entity);
+            return GetResult(result);
         }
 
         [HttpPut("{id}")]
@@ -85,19 +55,7 @@ namespace Magalu.Challenge.Web.Api.Controllers
             if (!allowedActions.HasFlag(AllowedActions.Put))
                 return NotFound(null);
 
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var entity = await Context.Set<TEntity>().FindAsync(id);
-
-            if (entity == null)
-                return NotFound(null);
-
-            Mapper.Map(model, entity);
-
-            await Context.SaveChangesAsync();
-
-            return Mapper.Map<TGetModel>(entity);
+            return GetResult(await DataService.UpdateAsync(model, id));
         }
 
         [HttpDelete("{id}")]
@@ -106,16 +64,7 @@ namespace Magalu.Challenge.Web.Api.Controllers
             if (!allowedActions.HasFlag(AllowedActions.Put))
                 return NotFound(null);
 
-            var entity = await Context.Set<TEntity>().FindAsync(id);
-
-            if (entity == null)
-                return NotFound(null);
-
-            Context.Set<TEntity>().Remove(entity);
-
-            await Context.SaveChangesAsync();
-
-            return Ok(null);
+            return GetResult(await DataService.DeleteAsync(id));
         }
     }
 }
