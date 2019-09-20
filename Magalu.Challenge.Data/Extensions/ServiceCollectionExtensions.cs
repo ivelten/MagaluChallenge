@@ -17,7 +17,6 @@ namespace Magalu.Challenge.Data
                 .AddDbContext<MagaluContext>(optionsAction)
                 .AddUnitOfWork<MagaluContext>()
                 .AddCustomRepository<Customer, Repository<Customer>>()
-                .AddCustomRepository<Product, Repository<Product>>()
                 .AddCustomRepository<ProductReview, Repository<ProductReview>>()
                 .AddCustomRepository<FavoriteProduct, Repository<FavoriteProduct>>()
                 .AddCustomRepository<User, Repository<User>>()

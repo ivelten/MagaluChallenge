@@ -60,7 +60,7 @@ namespace Magalu.Challenge.Web.Api.IntegrationTests
 
                 response.EnsureSuccessStatusCode();
 
-                var expectedItems = DatabaseSeeds.Customers.Take(PaginationOptions.DefaultPageSize).ToArray();
+                var expectedItems = DatabaseSeeds.Customers.Take(Constants.PageSize).ToArray();
                 var actualItems = await response.Content.ReadAsAsync<GetCustomerModel[]>();
 
                 actualItems.Length.Should().Be(expectedItems.Length);
@@ -87,7 +87,7 @@ namespace Magalu.Challenge.Web.Api.IntegrationTests
 
                 response.EnsureSuccessStatusCode();
 
-                var expectedItems = DatabaseSeeds.Customers.SelectPage(pageNumber, PaginationOptions.DefaultPageSize).ToArray();
+                var expectedItems = DatabaseSeeds.Customers.SelectPage(pageNumber, Constants.PageSize).ToArray();
                 var actualItems = await response.Content.ReadAsAsync<GetCustomerModel[]>();
 
                 actualItems.Length.Should().Be(expectedItems.Length);

@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using Magalu.Challenge.Application;
 using Magalu.Challenge.Application.Models.Customer;
 using Magalu.Challenge.Application.Models.Product;
 using Magalu.Challenge.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -42,7 +40,6 @@ namespace Magalu.Challenge.ApplicationServices
 
         public ProductReviewService(IUnitOfWork unitOfWork,
             IMapper mapper,
-            IOptions<PaginationOptions> paginationOptions,
             ICustomerAuthorizationService customerAuthorizationService)
         {
             UnitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
@@ -50,7 +47,6 @@ namespace Magalu.Challenge.ApplicationServices
             ProductRepository = unitOfWork.GetRepository<Product>();
             CustomerRepository = unitOfWork.GetRepository<Customer>();
             Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            DefaultPageSize = paginationOptions?.Value?.DefaultPageSize ?? throw new ArgumentNullException(nameof(paginationOptions));
             CustomerAuthorizationService = customerAuthorizationService ?? throw new ArgumentNullException(nameof(customerAuthorizationService));
         }
 

@@ -12,7 +12,6 @@ namespace Magalu.Challenge.Web.Api.IntegrationTests
         {
             var configuration = TestServerBuilder.BuildConfiguration();
 
-            PaginationOptions = configuration.GetSection("PaginationOptions").Get<PaginationOptions>();
             SecurityOptions = configuration.GetSection("SecurityOptions").Get<SecurityOptions>();
 
             Server = TestServerBuilder.BuildServer(configuration);
@@ -21,8 +20,6 @@ namespace Magalu.Challenge.Web.Api.IntegrationTests
         public TestServer Server { get; private set; }
 
         public SecurityOptions SecurityOptions { get; private set; }
-
-        public PaginationOptions PaginationOptions { get; private set; }
 
         public void Dispose()
         {

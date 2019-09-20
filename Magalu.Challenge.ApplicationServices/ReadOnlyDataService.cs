@@ -25,11 +25,10 @@ namespace Magalu.Challenge.ApplicationServices
 
         protected readonly int DefaultPageSize;
 
-        public ReadOnlyDataService(IReadOnlyRepository<TEntity> repository, IMapper mapper, IOptions<PaginationOptions> paginationOptions)
+        public ReadOnlyDataService(IReadOnlyRepository<TEntity> repository, IMapper mapper)
         {
             Repository = repository ?? throw new ArgumentNullException(nameof(repository));
             Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            DefaultPageSize = paginationOptions?.Value?.DefaultPageSize ?? throw new ArgumentNullException(nameof(paginationOptions));
         }
 
         public virtual async Task<Result<TGetModel>> GetAsync(params object[] keyValues)
@@ -46,10 +45,7 @@ namespace Magalu.Challenge.ApplicationServices
         {
             var pageNumber = page.GetValueOrDefault(1);
 
-            var entities = await
-                Repository.GetPagedListAsync(
-                    pageIndex: pageNumber - 1,
-                    pageSize: DefaultPageSize);
+            var entities = await Repository.GetPagedListAsync(pageIndex: pageNumber - 1);
 
             return Result<IEnumerable<TGetModel>>.Success(Mapper.Map<IEnumerable<TGetModel>>(entities.Items));
         }

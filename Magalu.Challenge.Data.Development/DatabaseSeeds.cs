@@ -26,30 +26,6 @@ namespace Magalu.Challenge.Data.Development
                 new Customer { Id = new Guid("20b0afa4-2e5e-45f4-9e20-2988d89d2749"), Name = "Alice Farias", Email = "alice.farias@older.isp.com" }
             }.OrderBy(c => c.Id).ToArray();
 
-        public static ProductReview[] ProductReviews = new []
-            {
-                new ProductReview { CustomerId = Customers[0].Id, ProductId = Products[0].Id, Score = 4.1f },
-                new ProductReview { CustomerId = Customers[0].Id, ProductId = Products[1].Id, Score = 3.0f },
-                new ProductReview { CustomerId = Customers[0].Id, ProductId = Products[2].Id, Score = 5.0f, Comments = "Nice image quality, durable and easy to operate." },
-                new ProductReview { CustomerId = Customers[0].Id, ProductId = Products[3].Id, Score = 2.9f },
-                new ProductReview { CustomerId = Customers[0].Id, ProductId = Products[4].Id, Score = 4.0f },
-                new ProductReview { CustomerId = Customers[0].Id, ProductId = Products[5].Id, Score = 1.7f },
-                new ProductReview { CustomerId = Customers[1].Id, ProductId = Products[0].Id, Score = 3.5f },
-                new ProductReview { CustomerId = Customers[1].Id, ProductId = Products[1].Id, Score = 4.6f },
-                new ProductReview { CustomerId = Customers[2].Id, ProductId = Products[2].Id, Score = 4.8f },
-                new ProductReview { CustomerId = Customers[1].Id, ProductId = Products[3].Id, Score = 3.1f },
-                new ProductReview { CustomerId = Customers[4].Id, ProductId = Products[1].Id, Score = 5.0f },
-                new ProductReview { CustomerId = Customers[5].Id, ProductId = Products[3].Id, Score = 4.0f }
-            };
-
-        public static FavoriteProduct[] FavoriteProducts = new []
-            {
-                new FavoriteProduct { CustomerId = Customers[0].Id, ProductId = Products[2].Id },
-                new FavoriteProduct { CustomerId = Customers[2].Id, ProductId = Products[2].Id },
-                new FavoriteProduct { CustomerId = Customers[4].Id, ProductId = Products[1].Id },
-                new FavoriteProduct { CustomerId = Customers[5].Id, ProductId = Products[3].Id }
-            };
-
         public const string AdminUsername = "admin";
 
         public const string AdminPassword = "adminpw";

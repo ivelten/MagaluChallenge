@@ -29,10 +29,6 @@ namespace Magalu.Challenge.Data.Development
 
                 context.Customers.AddRange(DatabaseSeeds.Customers);
 
-                context.ProductReviews.AddRange(DatabaseSeeds.ProductReviews);
-
-                context.FavoriteProducts.AddRange(DatabaseSeeds.FavoriteProducts);
-
                 var users = new User[]
                 {
                     new User { Username = DatabaseSeeds.UserUsername, PasswordHash = hashingService.HashPassword(DatabaseSeeds.UserPassword), Role = Roles.User },

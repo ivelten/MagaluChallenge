@@ -8,7 +8,7 @@ namespace Magalu.Challenge.Data
     {
         Task<TEntity> FindAsync(params object[] keyValues);
 
-        Task<IPagedList<TEntity>> GetPagedListAsync(int pageIndex, int pageSize);
+        Task<IPagedList<TEntity>> GetPagedListAsync(int pageIndex);
     }
 
     public class ReadOnlyRepository<TEntity> : IReadOnlyRepository<TEntity> where TEntity : class
@@ -25,9 +25,9 @@ namespace Magalu.Challenge.Data
             return await Context.FindAsync<TEntity>(keyValues);
         }
 
-        public Task<IPagedList<TEntity>> GetPagedListAsync(int pageIndex, int pageSize)
+        public Task<IPagedList<TEntity>> GetPagedListAsync(int pageIndex)
         {
-            return Context.Set<TEntity>().ToPagedListAsync(pageIndex, pageSize);
+            return Context.Set<TEntity>().ToPagedListAsync(pageIndex, 100);
         }
     }
 }

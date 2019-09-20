@@ -18,7 +18,6 @@ namespace Magalu.Challenge.ApplicationServices
         {
             return services
                 .Configure<SecurityOptions>(configuration.GetSection("SecurityOptions"))
-                .Configure<PaginationOptions>(configuration.GetSection("PaginationOptions"))
                 .AddHttpContextAccessor()
                 .AddScoped<IDataService<Customer, GetCustomerModel, SendCustomerModel>, CustomerService>()
                 .AddScoped<IDataService<Product, GetProductModel, SendProductModel>, ProductService>()

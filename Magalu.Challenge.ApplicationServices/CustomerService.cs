@@ -1,17 +1,15 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
-using Magalu.Challenge.Application;
 using Magalu.Challenge.Application.Models.Customer;
 using Magalu.Challenge.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 namespace Magalu.Challenge.ApplicationServices
 {
     public class CustomerService : DataService<Customer, GetCustomerModel, SendCustomerModel>
     {
-        public CustomerService(IUnitOfWork unitOfWork, IMapper mapper, IOptions<PaginationOptions> paginationOptions) 
-            : base(unitOfWork, mapper, paginationOptions)
+        public CustomerService(IUnitOfWork unitOfWork, IMapper mapper) 
+            : base(unitOfWork, mapper)
         {
         }
 

@@ -46,6 +46,10 @@ namespace Magalu.Challenge.Web.Api
 
             services.ConfigureMagaluRepositories(options => options.UseMySql(connectionString));
 
+            // Comment out this line if you don't want to access the external product API as a repository.
+            // If this line is commented out, service will use local repository for products.
+            services.ConfigureExternalProductApiRepository();
+
             services.ConfigureMagaluApplicationServices(configuration);
 
             services.AddHealthChecks();

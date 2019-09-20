@@ -5,13 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.UnitOfWork" Version="2.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Magalu.Challenge.Domain\Magalu.Challenge.Domain.csproj" />
+    <ProjectReference Include="..\Magalu.Challenge.Data\Magalu.Challenge.Data.csproj" />
+    <ProjectReference Include="..\Magalu.Challenge.Shared\Magalu.Challenge.Shared.csproj" />
   </ItemGroup>
 
 </Project>

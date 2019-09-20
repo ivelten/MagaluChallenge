@@ -51,8 +51,6 @@ namespace Magalu.Challenge.Data
             builder.Entity<ProductReview>(review =>
             {
                 review.HasKey(r => new { r.ProductId, r.CustomerId });
-                review.HasOne(r => r.Customer).WithMany(c => c.ProductReviews).HasForeignKey(r => r.CustomerId);
-                review.HasOne(r => r.Product).WithMany(p => p.Reviews).HasForeignKey(r => r.ProductId);
                 review.Property(r => r.Score).IsRequired().HasColumnType("FLOAT(2,1)");
                 review.Property(r => r.Comments).HasMaxLength(2000);
                 review.Property(r => r.ReviewDateTime).HasDefaultValue(DateTime.Now);
@@ -62,8 +60,6 @@ namespace Magalu.Challenge.Data
             builder.Entity<FavoriteProduct>(favorite =>
             {
                 favorite.HasKey(f => new { f.ProductId, f.CustomerId });
-                favorite.HasOne(f => f.Product).WithMany(p => p.FavoriteCustomers).HasForeignKey(f => f.ProductId);
-                favorite.HasOne(f => f.Customer).WithMany(c => c.FavoriteProducts).HasForeignKey(f => f.CustomerId);
                 favorite.ToTable("favorite_product");
             });
 
