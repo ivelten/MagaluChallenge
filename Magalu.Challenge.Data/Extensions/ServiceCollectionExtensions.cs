@@ -8,7 +8,9 @@ namespace Magalu.Challenge.Data
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection ConfigureMagaluRepositories(this IServiceCollection services, Action<DbContextOptionsBuilder> optionsAction = null)
+        public static IServiceCollection ConfigureMagaluRepositories(
+            this IServiceCollection services, 
+            Action<DbContextOptionsBuilder> optionsAction = null)
         {
             return services
                 .AddScoped<DbContext, MagaluContext>()
@@ -19,7 +21,8 @@ namespace Magalu.Challenge.Data
                 .AddCustomRepository<ProductReview, Repository<ProductReview>>()
                 .AddCustomRepository<FavoriteProduct, Repository<FavoriteProduct>>()
                 .AddCustomRepository<User, Repository<User>>()
-                .AddCustomRepository<RequestResponseLog, Repository<RequestResponseLog>>();
+                .AddCustomRepository<RequestResponseLog, Repository<RequestResponseLog>>()
+                .AddScoped<IReadOnlyRepository<Product>, ReadOnlyRepository<Product>>();
         }
     }
 }

@@ -59,7 +59,6 @@ namespace Magalu.Challenge.ApplicationServices
 
             var entities = await 
                 Repository.GetPagedListAsync(
-                    selector: e => e, 
                     pageIndex: pageNumber - 1, 
                     pageSize: DefaultPageSize);
 

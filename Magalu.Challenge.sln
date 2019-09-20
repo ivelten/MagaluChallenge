@@ -30,6 +30,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Magalu.Challenge.Applicatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Magalu.Challenge.Infrastructure", "Magalu.Challenge.Infrastructure\Magalu.Challenge.Infrastructure.csproj", "{CFB58CAF-6628-4074-8578-672EA803B4A0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Magalu.Challenge.Data.External", "Magalu.Challenge.Data.External\Magalu.Challenge.Data.External.csproj", "{EC2CB4AB-2B95-493F-9C41-A9A4F95725E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +74,10 @@ Global
 		{CFB58CAF-6628-4074-8578-672EA803B4A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFB58CAF-6628-4074-8578-672EA803B4A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFB58CAF-6628-4074-8578-672EA803B4A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC2CB4AB-2B95-493F-9C41-A9A4F95725E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC2CB4AB-2B95-493F-9C41-A9A4F95725E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC2CB4AB-2B95-493F-9C41-A9A4F95725E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC2CB4AB-2B95-493F-9C41-A9A4F95725E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +92,7 @@ Global
 		{469D1DC0-14A1-41B2-90CC-BC8B1A9817C5} = {DE73DF6A-1A68-4337-BF4E-FFBAD2799350}
 		{D2B74B6C-EF6C-458C-842E-DE46C8B66F77} = {DE73DF6A-1A68-4337-BF4E-FFBAD2799350}
 		{CFB58CAF-6628-4074-8578-672EA803B4A0} = {DE73DF6A-1A68-4337-BF4E-FFBAD2799350}
+		{EC2CB4AB-2B95-493F-9C41-A9A4F95725E5} = {DE73DF6A-1A68-4337-BF4E-FFBAD2799350}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {35635CAC-59C8-41BE-93B4-51AFAAA5672D}

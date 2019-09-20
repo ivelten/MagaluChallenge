@@ -2,6 +2,7 @@
 using Magalu.Challenge.ApplicationServices;
 using Magalu.Challenge.Data;
 using Magalu.Challenge.Data.Development;
+using Magalu.Challenge.Domain.Entities;
 using Magalu.Challenge.Infrastructure.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,13 +36,14 @@ namespace Magalu.Challenge.Web.Api
             return services.AddMvc();
         }
 
-        public virtual void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             ConfigureMvc(services)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options => options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore);
 
             var connectionString = configuration.GetSection("ConnectionStrings").GetValue<string>("MagaluDatabase");
+
             services.ConfigureMagaluRepositories(options => options.UseMySql(connectionString));
 
             services.ConfigureMagaluApplicationServices(configuration);

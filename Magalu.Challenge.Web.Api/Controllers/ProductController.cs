@@ -1,8 +1,6 @@
 ﻿using Magalu.Challenge.Application.Models.Product;
 using Magalu.Challenge.ApplicationServices;
-using Magalu.Challenge.Domain;
 using Magalu.Challenge.Domain.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,28 +10,16 @@ namespace Magalu.Challenge.Web.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : DataController<Product, GetProductModel, SendProductModel>
+    public class ProductController : ReadOnlyDataController<Product, GetProductModel>
     {
         protected readonly IProductReviewService ProductReviewService;
 
         public ProductController(
-            IDataService<Product, GetProductModel, SendProductModel> dataService,
+            IReadOnlyDataService<Product, GetProductModel> dataService,
             IProductReviewService productReviewService)
-            : base(dataService, AllowedActions.Get | AllowedActions.GetPage | AllowedActions.Post | AllowedActions.Put)
+            : base(dataService)
         {
             ProductReviewService = productReviewService ?? throw new ArgumentNullException(nameof(productReviewService));
-        }
-
-        [Authorize(Roles = Roles.Administrator)]
-        public override Task<ActionResult<GetProductModel>> Post([FromBody] SendProductModel model)
-        {
-            return base.Post(model);
-        }
-
-        [Authorize(Roles = Roles.Administrator)]
-        public override Task<ActionResult<GetProductModel>> Put(Guid id, [FromBody] SendProductModel model)
-        {
-            return base.Put(id, model);
         }
 
         [HttpGet("{id}/review")]

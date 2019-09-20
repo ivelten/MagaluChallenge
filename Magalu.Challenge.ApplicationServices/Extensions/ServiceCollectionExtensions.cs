@@ -29,6 +29,7 @@ namespace Magalu.Challenge.ApplicationServices
                 .AddScoped<IHashingService, BCryptHashingService>()
                 .AddScoped<IFavoriteProductService, FavoriteProductService>()
                 .AddScoped<IProductReviewService, ProductReviewService>()
+                .AddScoped<IReadOnlyDataService<Product, GetProductModel>, ReadOnlyDataService<Product, GetProductModel>>()
                 .AddAutoMapper(typeof(DomainToApplicationProfile), typeof(ApplicationToDomainProfile));
         }
 

@@ -23,7 +23,7 @@ namespace Magalu.Challenge.Web.Api.Controllers
             IDataService<Customer, GetCustomerModel, SendCustomerModel> dataService,
             IFavoriteProductService favoriteProductService,
             IProductReviewService productReviewService)
-            : base(dataService, AllowedActions.All)
+            : base(dataService)
         {
             FavoriteProductService = favoriteProductService ?? throw new ArgumentNullException(nameof(favoriteProductService));
             ProductReviewService = productReviewService ?? throw new ArgumentNullException(nameof(productReviewService));
