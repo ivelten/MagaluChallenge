@@ -8,7 +8,7 @@ namespace Magalu.Challenge.ApplicationServices
 {
     public interface ICustomerAuthorizationService
     {
-        bool CustomerIdIsAuthorized(long id);
+        bool CustomerIdIsAuthorized(Guid id);
     }
 
     public class CustomerAuthorizationService : ICustomerAuthorizationService
@@ -20,17 +20,17 @@ namespace Magalu.Challenge.ApplicationServices
             this.httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
-        private long? TryGetCustomerIdFromClaims()
+        private Guid? TryGetCustomerIdFromClaims()
         {
             var customerIdClaim = httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.CustomerId);
 
-            if (long.TryParse(customerIdClaim?.Value, out long customerId))
+            if (Guid.TryParse(customerIdClaim?.Value, out Guid customerId))
                 return customerId;
 
             return null;
         }
 
-        public bool CustomerIdIsAuthorized(long id)
+        public bool CustomerIdIsAuthorized(Guid id)
         {
             var roleClaim = httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
 

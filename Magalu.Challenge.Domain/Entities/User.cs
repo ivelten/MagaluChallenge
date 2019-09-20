@@ -1,4 +1,6 @@
-﻿namespace Magalu.Challenge.Domain.Entities
+﻿using System;
+
+namespace Magalu.Challenge.Domain.Entities
 {
     public class User
     {
@@ -8,7 +10,7 @@
 
         public string Role { get; set; }
 
-        public long? CustomerId { get; set; }
+        public Guid? CustomerId { get; set; }
 
         public virtual Customer Customer { get; set; }
     }

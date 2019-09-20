@@ -28,7 +28,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Magalu.Challenge.Applicatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Magalu.Challenge.Application", "Magalu.Challenge.Application\Magalu.Challenge.Application.csproj", "{D2B74B6C-EF6C-458C-842E-DE46C8B66F77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Magalu.Challenge.Infrastructure", "Magalu.Challenge.Infrastructure\Magalu.Challenge.Infrastructure.csproj", "{CFB58CAF-6628-4074-8578-672EA803B4A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Magalu.Challenge.Infrastructure", "Magalu.Challenge.Infrastructure\Magalu.Challenge.Infrastructure.csproj", "{CFB58CAF-6628-4074-8578-672EA803B4A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

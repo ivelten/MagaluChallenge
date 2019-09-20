@@ -1,8 +1,10 @@
-﻿namespace Magalu.Challenge.Application.Models.Product
+﻿using System;
+
+namespace Magalu.Challenge.Application.Models.Product
 {
     public class GetProductModel
     {
-        public long Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Brand { get; set; }
 

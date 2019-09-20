@@ -31,13 +31,13 @@ namespace Magalu.Challenge.Web.Api.Controllers
         }
 
         [Authorize(Roles = Roles.Administrator)]
-        public override Task<ActionResult<GetProductModel>> Put(long id, [FromBody] SendProductModel model)
+        public override Task<ActionResult<GetProductModel>> Put(Guid id, [FromBody] SendProductModel model)
         {
             return base.Put(id, model);
         }
 
         [HttpGet("{id}/review")]
-        public async Task<ActionResult<IEnumerable<GetProductReviewModel>>> GetReviews(long id, int? page)
+        public async Task<ActionResult<IEnumerable<GetProductReviewModel>>> GetReviews(Guid id, int? page)
         {
             return GetResult(await ProductReviewService.GetProductReviewsOfProductAsync(id, page));
         }

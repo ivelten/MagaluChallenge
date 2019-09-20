@@ -37,7 +37,7 @@ namespace Magalu.Challenge.Data.Development
                 {
                     new User { Username = DatabaseSeeds.UserUsername, PasswordHash = hashingService.HashPassword(DatabaseSeeds.UserPassword), Role = Roles.User },
                     new User { Username = DatabaseSeeds.AdminUsername, PasswordHash = hashingService.HashPassword(DatabaseSeeds.AdminPassword), Role = Roles.Administrator },
-                    new User { Username = DatabaseSeeds.CustomerUsername, PasswordHash = hashingService.HashPassword(DatabaseSeeds.CustomerPassword), Role = Roles.User, CustomerId = 1 }
+                    new User { Username = DatabaseSeeds.CustomerUsername, PasswordHash = hashingService.HashPassword(DatabaseSeeds.CustomerPassword), Role = Roles.User, CustomerId = DatabaseSeeds.Customers[0].Id }
                 };
 
                 context.Users.AddRange(users);

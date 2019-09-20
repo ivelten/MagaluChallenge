@@ -1,7 +1,9 @@
-﻿namespace Magalu.Challenge.Application.Models.Customer
+﻿using System;
+
+namespace Magalu.Challenge.Application.Models.Customer
 {
     public class SendFavoriteProductModel
     {
-        public long ProductId { get; set; }
+        public Guid ProductId { get; set; }
     }
 }

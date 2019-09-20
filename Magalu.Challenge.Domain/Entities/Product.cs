@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace Magalu.Challenge.Domain.Entities
 {
     public class Product
     {
-        public long Id { get; set; }
+        public Guid Id { get; set; }
 
         public decimal Price { get; set; }
 

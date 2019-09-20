@@ -13,15 +13,15 @@ namespace Magalu.Challenge.ApplicationServices
 {
     public interface IProductReviewService
     {
-        Task<Result<IEnumerable<GetProductReviewModel>>> GetProductReviewsOfCustomerAsync(long customerId, int? page);
+        Task<Result<IEnumerable<GetProductReviewModel>>> GetProductReviewsOfCustomerAsync(Guid customerId, int? page);
 
-        Task<Result<IEnumerable<GetProductReviewModel>>> GetProductReviewsOfProductAsync(long productId, int? page);
+        Task<Result<IEnumerable<GetProductReviewModel>>> GetProductReviewsOfProductAsync(Guid productId, int? page);
 
-        Task<Result<GetProductReviewModel>> SaveReviewAsync(long productId, SendProductReviewModel model);
+        Task<Result<GetProductReviewModel>> SaveReviewAsync(Guid productId, SendProductReviewModel model);
 
-        Task<Result<GetProductReviewModel>> UpdateReviewAsync(long productId, SendProductReviewModel model);
+        Task<Result<GetProductReviewModel>> UpdateReviewAsync(Guid productId, SendProductReviewModel model);
 
-        Task<Result> DeleteReviewAsync(long id, DeleteProductReviewModel model);
+        Task<Result> DeleteReviewAsync(Guid id, DeleteProductReviewModel model);
     }
 
     public class ProductReviewService : IProductReviewService
@@ -54,7 +54,7 @@ namespace Magalu.Challenge.ApplicationServices
             CustomerAuthorizationService = customerAuthorizationService ?? throw new ArgumentNullException(nameof(customerAuthorizationService));
         }
 
-        public async Task<Result<IEnumerable<GetProductReviewModel>>> GetProductReviewsOfCustomerAsync(long customerId, int? page)
+        public async Task<Result<IEnumerable<GetProductReviewModel>>> GetProductReviewsOfCustomerAsync(Guid customerId, int? page)
         {
             var pageNumber = page.GetValueOrDefault(1);
 
@@ -68,7 +68,7 @@ namespace Magalu.Challenge.ApplicationServices
             return Result<IEnumerable<GetProductReviewModel>>.Success(Mapper.Map<IEnumerable<GetProductReviewModel>>(reviews.Items));
         }
 
-        public async Task<Result<IEnumerable<GetProductReviewModel>>> GetProductReviewsOfProductAsync(long productId, int? page)
+        public async Task<Result<IEnumerable<GetProductReviewModel>>> GetProductReviewsOfProductAsync(Guid productId, int? page)
         {
             var pageNumber = page.GetValueOrDefault(1);
 
@@ -82,7 +82,7 @@ namespace Magalu.Challenge.ApplicationServices
             return Result<IEnumerable<GetProductReviewModel>>.Success(Mapper.Map<IEnumerable<GetProductReviewModel>>(reviews.Items));
         }
 
-        public async Task<Result<GetProductReviewModel>> SaveReviewAsync(long productId, SendProductReviewModel model)
+        public async Task<Result<GetProductReviewModel>> SaveReviewAsync(Guid productId, SendProductReviewModel model)
         {
             if (!CustomerAuthorizationService.CustomerIdIsAuthorized(productId))
                 return Result<GetProductReviewModel>.Forbidden();
@@ -106,7 +106,7 @@ namespace Magalu.Challenge.ApplicationServices
             return Result<GetProductReviewModel>.Success(Mapper.Map<GetProductReviewModel>(review));
         }
 
-        public async Task<Result<GetProductReviewModel>> UpdateReviewAsync(long productId, SendProductReviewModel model)
+        public async Task<Result<GetProductReviewModel>> UpdateReviewAsync(Guid productId, SendProductReviewModel model)
         {
             if (!CustomerAuthorizationService.CustomerIdIsAuthorized(model.CustomerId))
                 return Result<GetProductReviewModel>.Forbidden();
@@ -129,7 +129,7 @@ namespace Magalu.Challenge.ApplicationServices
             return Result<GetProductReviewModel>.Success(Mapper.Map<GetProductReviewModel>(review));
         }
 
-        public async Task<Result> DeleteReviewAsync(long id, DeleteProductReviewModel model)
+        public async Task<Result> DeleteReviewAsync(Guid id, DeleteProductReviewModel model)
         {
             if (CustomerAuthorizationService.CustomerIdIsAuthorized(id))
                 return Result.Forbidden();

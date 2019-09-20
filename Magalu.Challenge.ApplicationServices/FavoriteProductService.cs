@@ -13,11 +13,11 @@ namespace Magalu.Challenge.ApplicationServices
 {
     public interface IFavoriteProductService
     {
-        Task<Result<IEnumerable<GetProductModel>>> GetFavoriteProductsAsync(long id, int? page);
+        Task<Result<IEnumerable<GetProductModel>>> GetFavoriteProductsAsync(Guid id, int? page);
 
-        Task<Result<GetFavoriteProductModel>> SaveFavoriteProductAsync(long id, SendFavoriteProductModel model);
+        Task<Result<GetFavoriteProductModel>> SaveFavoriteProductAsync(Guid id, SendFavoriteProductModel model);
 
-        Task<Result> DeleteFavoriteProduct(long customerId, DeleteFavoriteProductModel model);
+        Task<Result> DeleteFavoriteProduct(Guid customerId, DeleteFavoriteProductModel model);
     }
 
     public class FavoriteProductService : IFavoriteProductService
@@ -48,7 +48,7 @@ namespace Magalu.Challenge.ApplicationServices
             CustomerAuthorizationService = customerAuthorizationService ?? throw new ArgumentNullException(nameof(customerAuthorizationService));
         }
 
-        public async Task<Result<IEnumerable<GetProductModel>>> GetFavoriteProductsAsync(long customerId, int? page)
+        public async Task<Result<IEnumerable<GetProductModel>>> GetFavoriteProductsAsync(Guid customerId, int? page)
         {
             var pageNumber = page.GetValueOrDefault(1);
 
@@ -63,7 +63,7 @@ namespace Magalu.Challenge.ApplicationServices
             return Result<IEnumerable<GetProductModel>>.Success(Mapper.Map<IEnumerable<GetProductModel>>(products.Items));
         }
 
-        public async Task<Result<GetFavoriteProductModel>> SaveFavoriteProductAsync(long customerId, SendFavoriteProductModel model)
+        public async Task<Result<GetFavoriteProductModel>> SaveFavoriteProductAsync(Guid customerId, SendFavoriteProductModel model)
         {
             if (await ProductRepository.FindAsync(model.ProductId) == null)
                 return Result<GetFavoriteProductModel>.BadRequest($"Product with Id {model.ProductId} does not exist.");
@@ -81,7 +81,7 @@ namespace Magalu.Challenge.ApplicationServices
             return Result<GetFavoriteProductModel>.Success(Mapper.Map<GetFavoriteProductModel>(favorite));
         }
 
-        public async Task<Result> DeleteFavoriteProduct(long customerId, DeleteFavoriteProductModel model)
+        public async Task<Result> DeleteFavoriteProduct(Guid customerId, DeleteFavoriteProductModel model)
         {
             if (!CustomerAuthorizationService.CustomerIdIsAuthorized(customerId))
                 return Result.Forbidden();

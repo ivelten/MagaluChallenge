@@ -30,10 +30,14 @@ namespace Magalu.Challenge.Web.Api
             environmentType = (EnvironmentType)Enum.Parse(typeof(EnvironmentType), hostingEnvironment.EnvironmentName);
         }
 
-        public void ConfigureServices(IServiceCollection services)
+        public virtual IMvcBuilder ConfigureMvc(IServiceCollection services)
         {
-            services
-                .AddMvc()
+            return services.AddMvc();
+        }
+
+        public virtual void ConfigureServices(IServiceCollection services)
+        {
+            ConfigureMvc(services)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options => options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore);
 
@@ -50,11 +54,10 @@ namespace Magalu.Challenge.Web.Api
                 services.ConfigureDevelopmentDatabase();
         }
 
-        public void Configure(IApplicationBuilder app)
+        public virtual void Configure(IApplicationBuilder app)
         {
             if (environmentType == EnvironmentType.Development)
                 app.UseDeveloperExceptionPage();
-
 
             if (environmentType == EnvironmentType.Production)
                 app.UseHsts();

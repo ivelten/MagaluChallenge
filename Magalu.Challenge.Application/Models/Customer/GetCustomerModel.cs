@@ -1,8 +1,10 @@
-﻿namespace Magalu.Challenge.Application.Models.Customer
+﻿using System;
+
+namespace Magalu.Challenge.Application.Models.Customer
 {
     public class GetCustomerModel
     {
-        public long Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
 

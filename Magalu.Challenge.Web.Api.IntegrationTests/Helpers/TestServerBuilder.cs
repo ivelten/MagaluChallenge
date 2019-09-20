@@ -19,9 +19,9 @@ namespace Magalu.Challenge.Web.Api.IntegrationTests
         {
             var builder =
                 new WebHostBuilder()
-                .UseEnvironment(EnvironmentType.Development.ToString())
+                .UseEnvironment(EnvironmentType.Development)
                 .UseConfiguration(configuration)
-                .UseStartup<Startup>();
+                .UseStartup<TestServerStartup>();
 
             return new TestServer(builder);
         }

@@ -1,7 +1,9 @@
-﻿namespace Magalu.Challenge.Application.Models.Product
+﻿using System;
+
+namespace Magalu.Challenge.Application.Models.Product
 {
     public class DeleteProductReviewModel
     {
-        public long CustomerId { get; set; }
+        public Guid CustomerId { get; set; }
     }
 }

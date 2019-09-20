@@ -1,10 +1,12 @@
-﻿namespace Magalu.Challenge.Application.Models.Product
+﻿using System;
+
+namespace Magalu.Challenge.Application.Models.Product
 {
     public class GetProductReviewModel
     {
-        public long CustomerId { get; set; }
+        public Guid CustomerId { get; set; }
 
-        public long ProductId { get; set; }
+        public Guid ProductId { get; set; }
 
         public float Score { get; set; }
 

@@ -21,7 +21,7 @@ namespace Magalu.Challenge.Web.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public virtual async Task<ActionResult<TGetModel>> Get(long id)
+        public virtual async Task<ActionResult<TGetModel>> Get(Guid id)
         {
             if (!allowedActions.HasFlag(AllowedActions.Get))
                 return NotFound(null);
@@ -50,7 +50,7 @@ namespace Magalu.Challenge.Web.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public virtual async Task<ActionResult<TGetModel>> Put(long id, [FromBody] TSendModel model)
+        public virtual async Task<ActionResult<TGetModel>> Put(Guid id, [FromBody] TSendModel model)
         {
             if (!allowedActions.HasFlag(AllowedActions.Put))
                 return NotFound(null);
@@ -59,7 +59,7 @@ namespace Magalu.Challenge.Web.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public virtual async Task<ActionResult> Delete(long id)
+        public virtual async Task<ActionResult> Delete(Guid id)
         {
             if (!allowedActions.HasFlag(AllowedActions.Put))
                 return NotFound(null);

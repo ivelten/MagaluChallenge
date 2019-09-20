@@ -1,6 +1,9 @@
 ﻿using FluentAssertions;
 using Magalu.Challenge.Application.Models.Customer;
 using Magalu.Challenge.Data.Development;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -9,6 +12,19 @@ using Xunit;
 
 namespace Magalu.Challenge.Web.Api.IntegrationTests
 {
+    public class CustomerInlineData : IEnumerable<object[]>
+    {
+        public IEnumerator<object[]> GetEnumerator()
+        {
+            return DatabaseSeeds.Customers.Select(c => new object[] { c.Id }).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+    }
+
     public class CustomerControllerTests : TestBase
     {
         public CustomerControllerTests(TestServerFixture testServerFixture) 
@@ -17,13 +33,8 @@ namespace Magalu.Challenge.Web.Api.IntegrationTests
         }
 
         [Theory]
-        [InlineData(1)]
-        [InlineData(2)]
-        [InlineData(3)]
-        [InlineData(4)]
-        [InlineData(5)]
-        [InlineData(6)]
-        public async Task Get_Should_Return_Expected_Value(long id)
+        [ClassData(typeof(CustomerInlineData))]
+        public async Task Get_Should_Return_Expected_Value(Guid id)
         {
             using (var client = Server.CreateClient())
             {
