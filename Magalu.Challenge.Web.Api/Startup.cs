@@ -2,7 +2,6 @@
 using Magalu.Challenge.ApplicationServices;
 using Magalu.Challenge.Data;
 using Magalu.Challenge.Data.Development;
-using Magalu.Challenge.Domain.Entities;
 using Magalu.Challenge.Infrastructure.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
+using Microsoft.OpenApi.Models;
 
 namespace Magalu.Challenge.Web.Api
 {
@@ -42,12 +42,13 @@ namespace Magalu.Challenge.Web.Api
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options => options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore);
 
+            services.AddSwaggerGen(options => options.SwaggerDoc("v1", new OpenApiInfo { Title = "Magalu Challenge API", Version = "v1" }));
+
             var connectionString = configuration.GetSection("ConnectionStrings").GetValue<string>("MagaluDatabase");
 
             services.ConfigureMagaluRepositories(options => options.UseMySql(connectionString));
 
-            // Comment out this line if you don't want to access the external product API as a repository.
-            // If this line is commented out, service will use local repository for products.
+            // Remove or comment the following line if you don't want to access the external product API as a repository.
             services.ConfigureExternalProductApiRepository();
 
             services.ConfigureMagaluApplicationServices(configuration);
@@ -69,6 +70,9 @@ namespace Magalu.Challenge.Web.Api
                 app.UseHsts();
 
             app.UseMiddleware<RequestResponseLoggingMiddleware>();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"));
 
             app.UseHealthChecks("/api/health");
             app.UseAuthentication();
