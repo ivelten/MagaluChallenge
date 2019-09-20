@@ -6,6 +6,7 @@ using Magalu.Challenge.Infrastructure.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -36,7 +37,9 @@ namespace Magalu.Challenge.Web.Api
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options => options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore);
 
-            services.ConfigureMagaluRepositories(configuration.GetSection("ConnectionStrings").GetValue<string>("MagaluDatabase"));
+            var connectionString = configuration.GetSection("ConnectionStrings").GetValue<string>("MagaluDatabase");
+            services.ConfigureMagaluRepositories(options => options.UseMySql(connectionString));
+
             services.ConfigureMagaluApplicationServices(configuration);
 
             services.AddHealthChecks();
